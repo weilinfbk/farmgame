@@ -365,10 +365,10 @@ function updateWeatherAudio() {
   const w = state.weather;
   
   if (w === 'rain') {
-    rainGain.gain.linearRampToValueAtTime(0.3, now + 2); // 2秒淡入
+    rainGain.gain.linearRampToValueAtTime(0.05, now + 2); // 2秒淡入
     rainFilter.frequency.linearRampToValueAtTime(2000, now + 2);
   } else if (w === 'storm') {
-    rainGain.gain.linearRampToValueAtTime(0.6, now + 2); // 暴雨声音更大
+    rainGain.gain.linearRampToValueAtTime(0.3, now + 2); // 暴雨声音更大
     rainFilter.frequency.linearRampToValueAtTime(800, now + 2);
   } else if (w === 'snow') {
     rainGain.gain.linearRampToValueAtTime(0.05, now + 2); // 雪天只有极其轻微的风声
