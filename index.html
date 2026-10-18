@@ -6,18 +6,61 @@
 <title>🌾 无尽农场</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  /* ======= 四季主题变量 ======= */
   :root {
-    --bg: #16211a;
-    --panel: #1e2c22;
-    --panel2: #26382c;
-    --border: #35513c;
+    /* 默认春季 */
+    --panel: #223629;
+    --panel2: #2c4634;
+    --border: #3e6349;
     --text: #e6f2e4;
     --dim: #8fa895;
+    --locked-bg: #16261c;
+    --locked-border: #233c2d;
+    --btn-hover: #385a44;
+    
     --green: #5ec46a;
     --gold: #f5c542;
     --red: #e06b6b;
     --blue: #6fa8dc;
   }
+
+  /* 夏季 */
+  body.theme-summer {
+    --panel: #1a331d;
+    --panel2: #224224;
+    --border: #326336;
+    --text: #e0f2e1;
+    --dim: #88a58a;
+    --locked-bg: #102213;
+    --locked-border: #1c3820;
+    --btn-hover: #2d5531;
+  }
+
+  /* 秋季 */
+  body.theme-autumn {
+    --panel: #362818;
+    --panel2: #473522;
+    --border: #6e5030;
+    --text: #f2e8d5;
+    --dim: #a89580;
+    --locked-bg: #22180e;
+    --locked-border: #382816;
+    --btn-hover: #5a4229;
+  }
+
+  /* 冬季 */
+  body.theme-winter {
+    --panel: #222e38;
+    --panel2: #2c3b47;
+    --border: #405b6e;
+    --text: #e2edf5;
+    --dim: #8b9ca8;
+    --locked-bg: #141c23;
+    --locked-border: #24323d;
+    --btn-hover: #354858;
+  }
+
   html, body { height: 100%; overflow: hidden; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
@@ -35,23 +78,26 @@
     flex: 0 0 auto;
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px;
-    background: linear-gradient(180deg, #22362a, #1a2820);
+    background: linear-gradient(180deg, var(--panel2), var(--panel));
     border-bottom: 2px solid var(--border);
     flex-wrap: wrap;
+    transition: all 0.5s ease;
   }
   .stat {
     display: flex; align-items: center; gap: 4px;
-    background: #14201a; border: 1px solid var(--border);
+    background: var(--locked-bg); border: 1px solid var(--border);
     border-radius: 8px; padding: 4px 9px;
     font-size: 13px; font-weight: 600; white-space: nowrap;
+    transition: all 0.5s ease;
   }
   .stat .ico { font-size: 14px; }
   #moneyEl { color: var(--gold); }
   .spacer { flex: 1 1 auto; }
   .icon-btn {
-    background: #14201a; border: 1px solid var(--border); color: var(--text);
+    background: var(--locked-bg); border: 1px solid var(--border); color: var(--text);
     border-radius: 8px; padding: 5px 10px; font-size: 13px; cursor: pointer;
     font-family: inherit;
+    transition: all 0.5s ease;
   }
   .icon-btn:active { transform: scale(.94); }
 
@@ -66,10 +112,10 @@
     flex: 1 1 0; background: var(--panel); border: 2px solid var(--border);
     color: var(--text); border-radius: 10px; padding: 8px 4px;
     font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer;
-    transition: all .12s; white-space: nowrap;
+    transition: all 0.3s ease; white-space: nowrap;
   }
   .tool.active {
-    background: linear-gradient(180deg, #3d6b46, #2d5235);
+    background: linear-gradient(180deg, var(--btn-hover), var(--panel2));
     border-color: var(--green);
     box-shadow: 0 0 12px rgba(94,196,106,.35);
   }
@@ -88,50 +134,106 @@
     aspect-ratio: 1 / 1; border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: clamp(15px, 3.6vw, 26px); cursor: pointer;
-    position: relative; transition: transform .08s, filter .15s;
+    position: relative; transition: transform .08s, filter .15s, background .4s;
     line-height: 1; overflow: hidden;
   }
   .tile:active { transform: scale(.9); filter: brightness(1.25); }
-  .tile.grass { background: linear-gradient(160deg, #46703f, #33562f); box-shadow: inset 0 0 0 1px #2a4527; }
+  
+  /* ======= 土地配色 ======= */
+  .tile.grass { background: linear-gradient(160deg, #5a9e4b, #3d7032); box-shadow: inset 0 0 0 1px #4a8a3d; }
   .tile.tilled { background: linear-gradient(160deg, #8a6544, #6b4d33); box-shadow: inset 0 0 0 1px #5a3f2a; }
   .tile.tilled.watered { background: linear-gradient(160deg, #5d6b52, #47523f); box-shadow: inset 0 0 0 1px #3a4433; }
   .tile.planted { background: linear-gradient(160deg, #8a6544, #6b4d33); box-shadow: inset 0 0 0 1px #5a3f2a; }
   .tile.planted.watered { background: linear-gradient(160deg, #6d5a3e, #52432f); }
+
+  body.theme-summer .tile.grass { background: linear-gradient(160deg, #3b7a3b, #225522); box-shadow: inset 0 0 0 1px #2a5a2a; }
+  body.theme-summer .tile.tilled { background: linear-gradient(160deg, #7a5534, #5a3d23); box-shadow: inset 0 0 0 1px #4a2f1a; }
+  body.theme-summer .tile.tilled.watered { background: linear-gradient(160deg, #4d5b42, #37422f); }
+  body.theme-summer .tile.planted { background: linear-gradient(160deg, #7a5534, #5a3d23); box-shadow: inset 0 0 0 1px #4a2f1a; }
+  body.theme-summer .tile.planted.watered { background: linear-gradient(160deg, #5d4a2e, #42311f); }
+
+  body.theme-autumn .tile.grass { background: linear-gradient(160deg, #9e8b4b, #705f32); box-shadow: inset 0 0 0 1px #8a7a3d; }
+  body.theme-autumn .tile.tilled { background: linear-gradient(160deg, #8e5635, #5e361f); box-shadow: inset 0 0 0 1px #4a2a15; }
+  body.theme-autumn .tile.tilled.watered { background: linear-gradient(160deg, #5a4530, #3f3022); }
+  body.theme-autumn .tile.planted { background: linear-gradient(160deg, #8e5635, #5e361f); box-shadow: inset 0 0 0 1px #4a2a15; }
+  body.theme-autumn .tile.planted.watered { background: linear-gradient(160deg, #6a4025, #4a2c18); }
+
+  body.theme-winter .tile.grass { background: linear-gradient(160deg, #dce3e6, #9aa8b0); box-shadow: inset 0 0 0 1px #c0cdd4; }
+  body.theme-winter .tile.tilled { background: linear-gradient(160deg, #7a6e62, #52493f); box-shadow: inset 0 0 0 1px #4a4238; }
+  body.theme-winter .tile.tilled.watered { background: linear-gradient(160deg, #5c5a55, #3f3e3a); }
+  body.theme-winter .tile.planted { background: linear-gradient(160deg, #7a6e62, #52493f); box-shadow: inset 0 0 0 1px #4a4238; }
+  body.theme-winter .tile.planted.watered { background: linear-gradient(160deg, #5c544a, #403a32); }
+
+  /* ======= 状态 ======= */
   .tile.ready {
-    background: linear-gradient(160deg, #6b8f4a, #4d6b33);
-    box-shadow: inset 0 0 0 2px var(--gold), 0 0 10px rgba(245,197,66,.45);
+    background: linear-gradient(160deg, #6b8f4a, #4d6b33) !important;
+    box-shadow: inset 0 0 0 2px var(--gold), 0 0 10px rgba(245,197,66,.45) !important;
     animation: readyPulse 1.6s ease-in-out infinite;
   }
   @keyframes readyPulse {
     0%,100% { box-shadow: inset 0 0 0 2px var(--gold), 0 0 8px rgba(245,197,66,.35); }
     50% { box-shadow: inset 0 0 0 2px #ffe07a, 0 0 16px rgba(245,197,66,.7); }
   }
+  .tile.withered {
+    background: linear-gradient(160deg, #5a4636, #33261c) !important;
+    box-shadow: inset 0 0 0 2px #7a4a3a, 0 0 10px rgba(160,60,40,.45) !important;
+    animation: witherPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes witherPulse {
+    0%,100% { box-shadow: inset 0 0 0 2px #7a4a3a, 0 0 6px rgba(160,60,40,.3); }
+    50% { box-shadow: inset 0 0 0 2px #b05a40, 0 0 14px rgba(200,80,50,.6); }
+  }
+  
+  /* 没解锁的土地也随主题变暗色 */
   .tile.locked {
-    background: #14201a; box-shadow: inset 0 0 0 1px #223028;
-    opacity: .5; font-size: 14px; cursor: default;
+    background: var(--locked-bg) !important; 
+    box-shadow: inset 0 0 0 1px var(--locked-border) !important;
+    opacity: .6; font-size: 14px; cursor: default;
+    transition: all 0.5s ease;
   }
   .tile .water-dot { position: absolute; right: 3px; bottom: 2px; font-size: 9px; opacity: .9; }
+
+  /* ======= 作物生长进度条 ======= */
+  .growth-bar {
+    position: absolute;
+    bottom: 3px;
+    left: 15%;
+    width: 70%;
+    height: 4px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 2px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .growth-fill {
+    height: 100%;
+    background: #a4e669;
+    transition: width 0.3s ease;
+  }
 
   .panel {
     flex: 0 0 340px; display: flex; flex-direction: column;
     background: var(--panel); border: 1px solid var(--border);
     border-radius: 12px; overflow: hidden; min-height: 0;
+    transition: all 0.5s ease;
   }
   .tabs {
     display: flex; flex: 0 0 auto;
-    background: #17241c; border-bottom: 1px solid var(--border);
+    background: var(--panel2); border-bottom: 1px solid var(--border);
+    transition: all 0.5s ease;
   }
   .tab {
     flex: 1; background: none; border: none; color: var(--dim);
     padding: 9px 2px; font-size: 12px; font-family: inherit;
     cursor: pointer; border-bottom: 2px solid transparent; font-weight: 600;
+    transition: all 0.3s ease;
   }
-  .tab.active { color: var(--green); border-bottom-color: var(--green); background: #1e2c22; }
+  .tab.active { color: var(--green); border-bottom-color: var(--green); background: var(--panel); }
   #panelContent {
     flex: 1 1 auto; overflow-y: auto; padding: 10px; min-height: 0;
   }
   #panelContent::-webkit-scrollbar { width: 6px; }
-  #panelContent::-webkit-scrollbar-thumb { background: #35513c; border-radius: 3px; }
+  #panelContent::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   .sec-title {
     font-size: 12px; font-weight: 700; color: var(--dim);
@@ -141,9 +243,9 @@
 
   .item-row {
     display: flex; align-items: center; gap: 7px;
-    background: var(--panel2); border: 1px solid #2e4234;
+    background: var(--panel2); border: 1px solid var(--border);
     border-radius: 8px; padding: 7px 9px; margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 13px; transition: all 0.5s ease;
   }
   .item-emoji { font-size: 17px; width: 22px; text-align: center; }
   .item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -151,9 +253,10 @@
   .item-count { color: var(--gold); font-weight: 700; font-size: 12px; }
 
   .mini-btn {
-    background: #33513b; border: 1px solid #446b4e; color: var(--text);
+    background: var(--border); border: 1px solid var(--border); color: var(--text);
     border-radius: 6px; padding: 4px 8px; font-size: 11px;
     font-family: inherit; cursor: pointer; font-weight: 600; white-space: nowrap;
+    transition: all 0.2s;
   }
   .mini-btn:active { transform: scale(.93); }
   .mini-btn.buy { background: #3d5a2a; border-color: #5c8a3c; }
@@ -166,24 +269,26 @@
 
   .big-btn {
     width: 100%; padding: 14px;
-    background: linear-gradient(180deg, #3d6b46, #2d5235);
-    border: 2px solid var(--green); color: #fff; border-radius: 10px;
+    background: linear-gradient(180deg, var(--btn-hover), var(--panel2));
+    border: 2px solid var(--border); color: var(--text); border-radius: 10px;
     font-size: 15px; font-weight: 700; font-family: inherit;
     cursor: pointer; margin-bottom: 8px;
+    transition: all 0.3s;
   }
   .big-btn:active { transform: scale(.97); }
   .big-btn:disabled { opacity: .4; }
 
   .bar-wrap {
-    height: 8px; background: #14201a; border-radius: 4px; overflow: hidden; margin-top: 4px;
+    height: 8px; background: var(--locked-bg); border-radius: 4px; overflow: hidden; margin-top: 4px;
   }
   .bar-fill { height: 100%; background: linear-gradient(90deg, #5ec46a, #8ee69a); transition: width .3s; }
 
   .quest-row {
-    background: var(--panel2); border: 1px solid #2e4234;
+    background: var(--panel2); border: 1px solid var(--border);
     border-radius: 8px; padding: 9px; margin-bottom: 6px; font-size: 12px;
+    transition: all 0.5s ease;
   }
-  .quest-row.done { border-color: var(--gold); background: #2e3020; }
+  .quest-row.done { border-color: var(--gold); background: rgba(245, 197, 66, 0.1); }
   .quest-head { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 600; }
   .quest-reward { color: var(--gold); font-size: 11px; }
 
@@ -193,10 +298,11 @@
     pointer-events: none; z-index: 300; width: 90%; max-width: 420px;
   }
   .toast {
-    background: rgba(20,32,26,.96); border: 1px solid var(--border);
+    background: var(--panel); border: 1px solid var(--border);
     border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600;
     box-shadow: 0 6px 20px rgba(0,0,0,.5);
     animation: toastIn .2s ease-out; text-align: center;
+    transition: all 0.5s ease;
   }
   .toast.out { opacity: 0; transform: translateY(-6px); transition: all .3s; }
   @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
@@ -208,15 +314,16 @@
   }
   .modal.hidden { display: none; }
   .modal-box {
-    background: linear-gradient(180deg, #22362a, #1a2820);
+    background: linear-gradient(180deg, var(--panel2), var(--panel));
     border: 2px solid var(--border); border-radius: 14px;
     padding: 20px; width: 100%; max-width: 400px; text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,.7);
+    transition: all 0.5s ease;
   }
   #fishTitle { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
   #fishMsg { font-size: 13px; color: var(--dim); min-height: 34px; margin: 10px 0; line-height: 1.5; }
   #fishBar {
-    position: relative; height: 42px; background: #0e1812;
+    position: relative; height: 42px; background: var(--locked-bg);
     border: 1px solid var(--border); border-radius: 8px;
     overflow: hidden; margin: 14px 0;
   }
@@ -255,10 +362,11 @@
 <div id="app">
   <header>
     <div class="stat"><span class="ico">📅</span><span id="dayEl">第 1 天</span></div>
+    <div class="stat"><span class="ico" id="seasonIco">🌸</span><span id="seasonEl">春季</span></div>
     <div class="stat"><span class="ico">🕐</span><span id="timeEl">06:00</span></div>
     <div class="stat"><span class="ico" id="weatherIco">☀️</span><span id="weatherEl">晴天</span></div>
     <div class="stat"><span class="ico">💰</span><span id="moneyEl">0</span></div>
-    <div class="stat"><span class="ico">💧</span><span id="waterEl">30/30</span></div>
+    <div class="stat"><span class="ico">💧</span><span id="waterEl">8/8</span></div>
     <div class="spacer"></div>
     <button class="icon-btn" id="pauseBtn">⏸</button>
     <button class="icon-btn" id="saveBtn">💾</button>
@@ -306,15 +414,18 @@
 
 <script>
 /* ============================================================
-   🌾 无尽农场  —  单文件农场经营游戏 v2
+   🌾 无尽农场 — v6：进度条 + 季节主题变色
    ============================================================ */
 
 const GRID_W = 8;
 const GRID_H = 8;
 
-const ROD_PRICE   = 150;   // 钓鱼竿价格
-const BAIT_PRICE  = 12;    // 鱼饵单价
-const BAIT_LIMIT  = 5;     // 每日鱼饵限购
+const ROD_PRICE   = 150;
+const BAIT_PRICE  = 12;
+const BAIT_LIMIT  = 5;
+
+const START_WATER   = 8;
+const WATER_PER_UP  = 4;
 
 const CROPS = {
   turnip:     { name:'萝卜',    emoji:'🥬', days:2,  seed:20,   sell:45,    xp:6,   lv:1  },
@@ -354,12 +465,27 @@ const WEATHER = {
   storm:  { name:'暴雨', emoji:'⛈️', color:'#5b7fa8', waters:true, rareBonus:true, sky:['#232f3d', '#0e141a'] },
   hot:    { name:'酷暑', emoji:'🔥', color:'#e06666', rareBonus:true, sky:['#4a3020', '#1f1410'] },
   wind:   { name:'大风', emoji:'🌬️', color:'#a8c3b0', sky:['#3a4a42', '#18211c'] },
+  snow:   { name:'雪天', emoji:'🌨️', color:'#dfe8f0', waters:true, sky:['#3a4a56', '#151b20'] },
 };
+
+const SEASONS = {
+  spring: { name:'春季', emoji:'🌸', witherDays:2, weather:{ sunny:0.30, cloudy:0.20, rain:0.30, storm:0.15, wind:0.05 } },
+  summer: { name:'夏季', emoji:'☀️', witherDays:2, weather:{ sunny:0.35, cloudy:0.10, rain:0.20, storm:0.15, hot:0.20 } },
+  autumn: { name:'秋季', emoji:'🍂', witherDays:1, weather:{ sunny:0.30, cloudy:0.25, wind:0.35, rain:0.10 } },
+  winter: { name:'冬季', emoji:'❄️', witherDays:1, weather:{ sunny:0.20, cloudy:0.30, wind:0.20, snow:0.30 } },
+};
+const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'];
+const DAYS_PER_SEASON = 7;
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.floor(n).toLocaleString('zh-CN');
 const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
+
+function getSeason(day) {
+  const idx = Math.floor((day - 1) / DAYS_PER_SEASON) % 4;
+  return SEASON_ORDER[idx];
+}
 
 function basePrice(id) {
   if (id === 'bait') return BAIT_PRICE;
@@ -386,10 +512,8 @@ function itemInfo(id) {
   return { name: '未知', emoji: '❓', type: 'other' };
 }
 
-/* ---------------- 存档 ---------------- */
-
 const SAVE_KEY = 'infinite_farm_save_v1';
-const SAVE_VER = 2;
+const SAVE_VER = 4;
 
 function defaultState() {
   const tiles = [];
@@ -401,15 +525,15 @@ function defaultState() {
   return {
     day: 1,
     time: 6 * 60,
-    money: 0,                  // 开局不给金币
+    money: 0,
     weather: 'sunny',
     tiles,
     inv: { seed_turnip: 8, seed_carrot: 4 },
-    water: 30,
-    waterMax: 30,
-    rodLvl: 0,                 // 0 = 尚未购买钓鱼竿
+    water: START_WATER,
+    waterMax: START_WATER,
+    rodLvl: 0,
     canLvl: 1,
-    baitBought: 0,             // 今日已购买鱼饵数量
+    baitBought: 0,
     selectedTool: 'hoe',
     selectedSeed: null,
     skills: {
@@ -420,7 +544,7 @@ function defaultState() {
     quests: [],
     market: {},
     demand: [],
-    stats: { harvest: 0, fish: 0, earned: 0, days: 0, planted: 0 },
+    stats: { harvest: 0, fish: 0, earned: 0, days: 0, planted: 0, withered: 0 },
     questsDay: 0,
   };
 }
@@ -434,27 +558,46 @@ function saveGame() {
   } catch (e) { console.warn('保存失败', e); return false; }
 }
 
+function migrateSave(data) {
+  if (!data || !data.state) return null;
+  if (data.v === 4) return data.state;
+  if (data.v === 3 || data.v === 2) {
+    const def = defaultState();
+    const s = Object.assign(def, data.state);
+    s.skills = Object.assign(def.skills, data.state.skills || {});
+    s.stats  = Object.assign(def.stats,  data.state.stats  || {});
+    s.inv    = data.state.inv || {};
+    s.market = data.state.market || {};
+    s.demand = data.state.demand || [];
+    s.tiles  = (data.state.tiles && data.state.tiles.length === GRID_W * GRID_H)
+      ? data.state.tiles : def.tiles;
+    s.tiles.forEach(t => {
+      if (t.crop) {
+        if (typeof t.crop.dryDays !== 'number') t.crop.dryDays = 0;
+        if (typeof t.crop.withered !== 'boolean') t.crop.withered = false;
+      }
+    });
+    s.canLvl = s.canLvl || 1;
+    s.waterMax = START_WATER + (s.canLvl - 1) * WATER_PER_UP;
+    s.water = Math.min(s.water ?? s.waterMax, s.waterMax);
+    s.baitBought = s.baitBought || 0;
+    s.stats.withered = s.stats.withered || 0;
+    return s;
+  }
+  return null;
+}
+
 function loadGame() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return false;
     const data = JSON.parse(raw);
-    if (!data || data.v !== SAVE_VER || !data.state) return false;
-    const def = defaultState();
-    const merged = Object.assign(def, data.state);
-    merged.skills = Object.assign(def.skills, data.state.skills || {});
-    merged.stats  = Object.assign(def.stats,  data.state.stats  || {});
-    merged.inv    = data.state.inv || {};
-    merged.market = data.state.market || {};
-    merged.demand = data.state.demand || [];
-    merged.tiles  = (data.state.tiles && data.state.tiles.length === GRID_W * GRID_H)
-      ? data.state.tiles : def.tiles;
-    state = merged;
+    const s = migrateSave(data);
+    if (!s) return false;
+    state = s;
     return true;
   } catch (e) { console.warn('读档失败', e); return false; }
 }
-
-/* ---------------- 技能 ---------------- */
 
 function xpNeed(lvl) { return Math.floor(100 * Math.pow(1.38, lvl - 1)); }
 
@@ -471,19 +614,16 @@ function addXp(skill, amount) {
   }
 }
 
-/* ---------------- 天气 ---------------- */
-
-function rollWeather() {
-  const r = Math.random();
-  if (r < 0.38) return 'sunny';
-  if (r < 0.55) return 'cloudy';
-  if (r < 0.74) return 'rain';
-  if (r < 0.82) return 'storm';
-  if (r < 0.90) return 'hot';
-  return 'wind';
+function rollWeather(season) {
+  const cfg = SEASONS[season] || SEASONS.spring;
+  const table = cfg.weather;
+  let r = Math.random();
+  for (const [w, p] of Object.entries(table)) {
+    r -= p;
+    if (r <= 0) return w;
+  }
+  return 'sunny';
 }
-
-/* ---------------- 市场 ---------------- */
 
 function rollMarket() {
   state.market = {};
@@ -507,8 +647,6 @@ function sellPriceOf(id) {
   return Math.max(1, Math.floor(base * m * demandMul * tradeBonus));
 }
 
-/* ---------------- 任务 ---------------- */
-
 function newQuests() {
   const fl = state.skills.farm.lvl;
   const fis = state.skills.fish.lvl;
@@ -531,8 +669,6 @@ function addQuestProgress(type, amount) {
   if (changed && currentTab === 'quest') renderPanel();
 }
 
-/* ---------------- 背包 ---------------- */
-
 function addItem(id, n = 1) { state.inv[id] = (state.inv[id] || 0) + n; }
 function removeItem(id, n = 1) {
   if (!state.inv[id] || state.inv[id] < n) return false;
@@ -540,8 +676,6 @@ function removeItem(id, n = 1) {
   if (state.inv[id] <= 0) delete state.inv[id];
   return true;
 }
-
-/* ---------------- Toast ---------------- */
 
 function toast(msg, dur = 1600) {
   const box = $('toasts');
@@ -556,10 +690,16 @@ function toast(msg, dur = 1600) {
   while (box.children.length > 5) box.firstChild.remove();
 }
 
-/* ---------------- 顶栏 & 背景 ---------------- */
-
 function renderTop() {
   $('dayEl').textContent = `第 ${state.day} 天`;
+
+  const season = getSeason(state.day);
+  const sc = SEASONS[season];
+  $('seasonIco').textContent = sc.emoji;
+  $('seasonEl').textContent = sc.name;
+
+  document.body.className = `theme-${season}`;
+
   const h = Math.floor(state.time / 60) % 24;
   const m = Math.floor(state.time % 60);
   $('timeEl').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
@@ -570,13 +710,10 @@ function renderTop() {
   $('weatherIco').textContent = w.emoji;
   $('waterEl').textContent = `${state.water}/${state.waterMax}`;
 
-  // 天气决定背景
   const sky = w.sky || ['#2c4f33', '#16211a'];
   document.body.style.background =
     `radial-gradient(circle at 50% 0%, ${sky[0]} 0%, ${sky[1]} 70%)`;
 }
-
-/* ---------------- 农场 ---------------- */
 
 const farmEl = $('farm');
 let tileEls = [];
@@ -596,6 +733,7 @@ function buildFarm() {
 }
 
 function updateFarm() {
+  const season = getSeason(state.day);
   state.tiles.forEach((t, i) => {
     const d = tileEls[i];
     if (!d) return;
@@ -608,11 +746,19 @@ function updateFarm() {
       const c = CROPS[t.crop.id];
       cls += ' planted';
       if (t.watered) cls += ' watered';
-      if (t.crop.growth >= c.days) {
+
+      if (t.crop.withered) {
+        cls += ' withered'; html = '🥀';
+      } else if (t.crop.growth >= c.days) {
         cls += ' ready'; html = c.emoji;
       } else {
         const p = t.crop.growth / c.days;
-        html = p < 0.45 ? '🌱' : '🌿';
+        let midIcon = '🌿';
+        if (season === 'autumn') midIcon = '🍂';
+        if (season === 'winter') midIcon = '🌾';
+        const icon = p < 0.45 ? '🌱' : midIcon;
+        const percent = Math.floor(p * 100);
+        html = `${icon}<div class="growth-bar"><div class="growth-fill" style="width:${percent}%"></div></div>`;
       }
     } else if (t.tilled) {
       cls += ' tilled';
@@ -626,11 +772,25 @@ function updateFarm() {
   });
 }
 
-/* ---------------- 农场交互 ---------------- */
-
 function onTileClick(i) {
   const t = state.tiles[i];
   if (!t.unlocked) { toast('这块地还没有解锁，去商店扩展农场吧'); return; }
+
+  if (t.crop && t.crop.withered) {
+    if (state.selectedTool !== 'water') {
+      toast('🥀 作物枯萎了，用 💧 浇水可以救活');
+      return;
+    }
+    if (t.watered) { toast('今天已经浇过水了'); return; }
+    if (state.water <= 0) { toast('💧 水壶空了！明天会自动装满'); return; }
+    state.water--;
+    t.watered = true;
+    t.crop.withered = false;
+    t.crop.dryDays = 0;
+    toast('🌱 作物恢复了生机！', 1600);
+    updateFarm(); renderTop(); saveGame();
+    return;
+  }
 
   if (t.crop && t.crop.growth >= CROPS[t.crop.id].days) { harvest(i); return; }
 
@@ -657,7 +817,7 @@ function onTileClick(i) {
     if (!state.inv[sid]) { toast('种子不足'); state.selectedSeed = null; refresh(); return; }
     const cropId = sid.slice(5);
     removeItem(sid, 1);
-    t.crop = { id: cropId, growth: 0 };
+    t.crop = { id: cropId, growth: 0, dryDays: 0, withered: false };
     state.stats.planted++;
     if (!state.inv[sid]) state.selectedSeed = null;
     updateFarm(); refresh();
@@ -666,7 +826,7 @@ function onTileClick(i) {
 
 function harvest(i) {
   const t = state.tiles[i];
-  if (!t.crop) return;
+  if (!t.crop || t.crop.withered) return;
   const c = CROPS[t.crop.id];
   if (t.crop.growth < c.days) { toast('还没成熟呢'); return; }
 
@@ -685,8 +845,6 @@ function harvest(i) {
   toast(`${c.emoji} 收获 ${c.name} ×${qty}`, 1400);
   updateFarm(); refresh(); saveGame();
 }
-
-/* ---------------- 时间循环 ---------------- */
 
 let paused = false;
 let lastTick = performance.now();
@@ -709,13 +867,32 @@ function tick(ts) {
   }
 }
 
-/* ---------------- 日结算 ---------------- */
-
 function endDay(auto) {
+  const season = getSeason(state.day);
+  const seasonCfg = SEASONS[season];
+
   state.tiles.forEach(t => {
-    if (t.crop && t.watered) {
-      const c = CROPS[t.crop.id];
-      if (t.crop.growth < c.days) t.crop.growth++;
+    if (!t.crop) return;
+    const c = CROPS[t.crop.id];
+
+    if (t.crop.growth >= c.days) {
+      t.crop.dryDays = 0;
+      t.crop.withered = false;
+      return;
+    }
+
+    if (t.watered) {
+      if (t.crop.withered) t.crop.withered = false;
+      t.crop.dryDays = 0;
+      t.crop.growth++;
+    } else {
+      t.crop.dryDays = (t.crop.dryDays || 0) + 1;
+      if (t.crop.dryDays >= seasonCfg.witherDays) {
+        if (!t.crop.withered) {
+          t.crop.withered = true;
+          state.stats.withered++;
+        }
+      }
     }
   });
 
@@ -723,13 +900,26 @@ function endDay(auto) {
   state.stats.days++;
   state.time = 6 * 60;
   state.water = state.waterMax;
-  state.baitBought = 0;          // 重置鱼饵限购
+  state.baitBought = 0;
 
-  state.weather = rollWeather();
+  const oldSeason = season;
+  const newSeason = getSeason(state.day);
+  if (oldSeason !== newSeason) {
+    setTimeout(() => {
+      toast(`${SEASONS[newSeason].emoji} 进入${SEASONS[newSeason].name}！`, 2600);
+      if (newSeason === 'autumn' || newSeason === 'winter') {
+        setTimeout(() => toast('⚠️ 秋冬季干燥，一天不浇水作物就会枯萎！', 3000), 900);
+      }
+    }, 800);
+  }
+
+  state.weather = rollWeather(newSeason);
   const w = WEATHER[state.weather];
 
   state.tiles.forEach(t => { t.watered = false; });
-  if (w.waters) state.tiles.forEach(t => { if (t.tilled) t.watered = true; });
+  if (w.waters) {
+    state.tiles.forEach(t => { if (t.tilled) t.watered = true; });
+  }
 
   rollMarket();
   newQuests();
@@ -740,12 +930,14 @@ function endDay(auto) {
 
 function showDayOverlay() {
   const w = WEATHER[state.weather];
+  const season = getSeason(state.day);
+  const sc = SEASONS[season];
   const ov = document.createElement('div');
   ov.className = 'day-overlay';
   ov.innerHTML = `
     <div class="big-emoji">${w.emoji}</div>
     <div class="big-text">第 ${state.day} 天</div>
-    <div class="sub">${w.name}${w.waters ? ' · 作物自动浇水' : ''}</div>
+    <div class="sub">${sc.emoji} ${sc.name} · ${w.name}${w.waters ? ' · 作物自动浇水' : ''}</div>
   `;
   document.body.appendChild(ov);
   setTimeout(() => {
@@ -754,8 +946,6 @@ function showDayOverlay() {
     setTimeout(() => ov.remove(), 520);
   }, 1100);
 }
-
-/* ---------------- 面板 ---------------- */
 
 let currentTab = 'bag';
 const panelContent = $('panelContent');
@@ -772,7 +962,6 @@ function renderPanel() {
   }
 }
 
-/* ---- 背包 ---- */
 function renderBag() {
   const entries = Object.entries(state.inv).filter(([k, v]) => v > 0);
   if (!entries.length) return '<div class="empty">背包空空如也<br>去 🏪 商店买些种子开始吧</div>';
@@ -823,12 +1012,20 @@ function skillRow(name, s, desc) {
   </div>`;
 }
 
-/* ---- 商店 ---- */
 function renderShop() {
   const fl = state.skills.farm.lvl;
-  let html = '<div class="sec-title">🎣 钓鱼用品</div>';
+  const season = getSeason(state.day);
+  const sc = SEASONS[season];
 
-  // 鱼竿
+  let html = `<div class="item-row" style="background:var(--panel);">
+    <span class="item-emoji">${sc.emoji}</span>
+    <span class="item-name">${sc.name}
+      <div class="item-sub">${sc.witherDays === 1 ? '一天不浇水就会枯萎' : '连续两天不浇水才会枯萎'}</div>
+    </span>
+  </div>`;
+
+  html += '<div class="sec-title">🎣 钓鱼用品</div>';
+
   if (state.rodLvl === 0) {
     html += `<div class="item-row">
       <span class="item-emoji">🎣</span>
@@ -848,7 +1045,6 @@ function renderShop() {
     </div>`;
   }
 
-  // 鱼饵
   const remain = BAIT_LIMIT - (state.baitBought || 0);
   html += `<div class="item-row">
     <span class="item-emoji">🪱</span>
@@ -876,11 +1072,11 @@ function renderShop() {
 
   html += '<div class="sec-title">🛠️ 工具升级</div>';
 
-  const canCost = Math.floor(250 * Math.pow(1.9, state.canLvl - 1));
+  const canCost = Math.floor(180 * Math.pow(1.6, state.canLvl - 1));
   html += `<div class="item-row">
     <span class="item-emoji">💧</span>
     <span class="item-name">水壶 Lv.${state.canLvl}
-      <div class="item-sub">容量 ${state.waterMax} → ${state.waterMax + 20}</div>
+      <div class="item-sub">容量 ${state.waterMax} → ${state.waterMax + WATER_PER_UP}</div>
     </span>
     <button class="mini-btn buy" data-act="upCan" ${state.money >= canCost ? '' : 'disabled'}>${fmt(canCost)}</button>
   </div>`;
@@ -909,7 +1105,6 @@ function renderShop() {
   return html;
 }
 
-/* ---- 市场 ---- */
 function renderMarket() {
   const sellable = [];
   Object.keys(CROPS).forEach(id => {
@@ -928,9 +1123,9 @@ function renderMarket() {
       const c = CROPS[id.slice(5)];
       return c ? `${c.emoji}${c.name}` : '?';
     }).join('、');
-    html += `<div class="item-row" style="background:#3a3218;border-color:#6b5a22;">
+    html += `<div class="item-row" style="border-color:#b8942e;">
       <span class="item-emoji">🔥</span>
-      <span class="item-name" style="color:#f5c542;">今日热门（3倍价格）<div class="item-sub">${names}</div></span>
+      <span class="item-name" style="color:var(--gold);">今日热门（3倍价格）<div class="item-sub">${names}</div></span>
     </div>`;
   }
 
@@ -963,7 +1158,6 @@ function renderMarket() {
   return html;
 }
 
-/* ---- 钓鱼 ---- */
 function renderFishPanel() {
   if (state.rodLvl === 0) {
     return `<div class="empty">🎣 你还没有钓鱼竿<br><br>去 🏪 商店购买钓鱼竿和鱼饵<br>然后才能开始钓鱼</div>`;
@@ -1011,7 +1205,6 @@ function renderFishPanel() {
   return html;
 }
 
-/* ---- 任务 ---- */
 function renderQuestPanel() {
   let html = '<div class="sec-title">📋 每日任务</div>';
   state.quests.forEach((q, idx) => {
@@ -1037,12 +1230,11 @@ function renderQuestPanel() {
     <div class="item-row"><span class="item-emoji">🐟</span><span class="item-name">累计钓鱼</span><span class="item-count">${fmt(state.stats.fish)}</span></div>
     <div class="item-row"><span class="item-emoji">💵</span><span class="item-name">累计赚取</span><span class="item-count">${fmt(state.stats.earned)}</span></div>
     <div class="item-row"><span class="item-emoji">🌱</span><span class="item-name">累计播种</span><span class="item-count">${fmt(state.stats.planted)}</span></div>
+    <div class="item-row"><span class="item-emoji">🥀</span><span class="item-name">枯萎次数</span><span class="item-count">${fmt(state.stats.withered)}</span></div>
     <div class="item-row"><span class="item-emoji">📅</span><span class="item-name">经营天数</span><span class="item-count">${fmt(state.day)}</span></div>
   `;
   return html;
 }
-
-/* ---------------- 面板点击 ---------------- */
 
 panelContent.addEventListener('click', e => {
   const btn = e.target.closest('[data-act]');
@@ -1101,10 +1293,11 @@ panelContent.addEventListener('click', e => {
     refresh(); saveGame();
   }
   else if (act === 'upCan') {
-    const cost = Math.floor(250 * Math.pow(1.9, state.canLvl - 1));
+    const cost = Math.floor(180 * Math.pow(1.6, state.canLvl - 1));
     if (state.money < cost) return;
     state.money -= cost; state.canLvl++;
-    state.waterMax += 20; state.water = state.waterMax;
+    state.waterMax += WATER_PER_UP;
+    state.water = state.waterMax;
     toast(`💧 水壶升级！容量 ${state.waterMax}`, 2000);
     refresh(); saveGame();
   }
@@ -1146,8 +1339,9 @@ panelContent.addEventListener('click', e => {
     if (!code) return;
     try {
       const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-      if (!data || data.v !== SAVE_VER || !data.state) throw new Error('格式错误');
-      state = Object.assign(defaultState(), data.state);
+      const s = migrateSave(data);
+      if (!s) throw new Error('格式错误');
+      state = s;
       refresh(); saveGame();
       toast('✅ 存档导入成功');
     } catch (err) { toast('❌ 存档码无效'); }
@@ -1190,8 +1384,6 @@ function sellItem(id, n) {
   refresh(); saveGame();
 }
 
-/* ---------------- 工具栏 ---------------- */
-
 function updateToolButtons() {
   document.querySelectorAll('.tool').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tool === state.selectedTool);
@@ -1215,8 +1407,6 @@ document.querySelectorAll('.tool').forEach(btn => {
   });
 });
 
-/* ---------------- 标签页 ---------------- */
-
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     currentTab = tab.dataset.tab;
@@ -1224,8 +1414,6 @@ document.querySelectorAll('.tab').forEach(tab => {
     renderPanel();
   });
 });
-
-/* ---------------- 钓鱼 ---------------- */
 
 let fishing = null;
 let fishRAF = null;
@@ -1243,7 +1431,6 @@ function openFishing() {
   if (state.rodLvl === 0) { toast('需要先在商店购买钓鱼竿'); return; }
   if ((state.inv['bait'] || 0) <= 0) { toast('🪱 没有鱼饵了，去商店购买'); return; }
 
-  // 抛竿即消耗 1 个鱼饵
   removeItem('bait', 1);
   refresh();
 
@@ -1255,7 +1442,6 @@ function openFishing() {
   fishActionBtn.disabled = false;
 
   fishing = { phase: 'wait' };
-
   const wait = rand(800, 2400);
   fishing.timer = setTimeout(() => {
     if (!fishing || fishing.phase !== 'wait') return;
@@ -1263,17 +1449,13 @@ function openFishing() {
   }, wait);
 }
 
-/* 概率设计：
-   普通鱼（1-2 星）占绝大多数；
-   3 星及以上总计约 0.003%（万分之 0.3），鱼竿/等级/天气仅有微小加成。 */
 function pickFish() {
   const rodBonus   = (state.rodLvl - 1) * 0.10;
   const fishLvlB   = (state.skills.fish.lvl - 1) * 0.03;
   const weatherB   = WEATHER[state.weather].rareBonus ? 1.8 : 1;
-  const rareChance = 0.00003 * (1 + rodBonus + fishLvlB) * weatherB; // 0.003% 基准
+  const rareChance = 0.00003 * (1 + rodBonus + fishLvlB) * weatherB;
 
   if (Math.random() < rareChance) {
-    // 稀有鱼（3-6 星），越稀有越难出
     const rares = Object.entries(FISH).filter(([, f]) => f.rarity >= 3);
     const weights = rares.map(([, f]) => 1 / Math.pow(f.rarity, 4));
     const total = weights.reduce((a, b) => a + b, 0);
@@ -1286,7 +1468,6 @@ function pickFish() {
     return { ...last[1], id: last[0] };
   }
 
-  // 普通鱼：1 星为主，2 星较少
   const ones = Object.entries(FISH).filter(([, f]) => f.rarity === 1);
   const twos = Object.entries(FISH).filter(([, f]) => f.rarity === 2);
   let p2 = 0.22 + (state.rodLvl - 1) * 0.03 + (state.skills.fish.lvl - 1) * 0.01;
@@ -1399,8 +1580,6 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Space' && fishing) { e.preventDefault(); stopFishing(); }
 });
 
-/* ---------------- 顶栏按钮 ---------------- */
-
 $('pauseBtn').addEventListener('click', () => {
   paused = !paused;
   $('pauseBtn').textContent = paused ? '▶️' : '⏸';
@@ -1416,11 +1595,10 @@ setInterval(() => { if (!paused) saveGame(); }, 15000);
 window.addEventListener('beforeunload', () => { saveGame(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) saveGame(); });
 
-/* ---------------- 初始化 ---------------- */
-
 function initNewGame() {
   rollMarket();
   newQuests();
+  state.weather = rollWeather(getSeason(state.day));
   buildFarm();
   updateToolButtons();
   refresh();
@@ -1438,6 +1616,7 @@ function start() {
   } else {
     rollMarket();
     newQuests();
+    state.weather = rollWeather(getSeason(state.day));
   }
 
   buildFarm();
@@ -1445,12 +1624,13 @@ function start() {
   refresh();
 
   if (loaded) {
-    toast(`🌾 欢迎回来！第 ${state.day} 天`, 2200);
+    const sc = SEASONS[getSeason(state.day)];
+    toast(`🌾 欢迎回来！第 ${state.day} 天 · ${sc.name}`, 2200);
   } else {
     setTimeout(() => {
       toast('🌾 欢迎来到无尽农场！', 2400);
       setTimeout(() => toast('先开垦 → 浇水 → 播种（背包已有种子）', 3000), 800);
-      setTimeout(() => toast('成熟后去市场卖钱，再买钓鱼竿', 3000), 1600);
+      setTimeout(() => toast('⚠️ 秋冬季一天不浇水作物会枯萎', 3000), 1600);
     }, 300);
   }
 
