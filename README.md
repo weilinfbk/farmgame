@@ -1,8 +1,8 @@
 ---
 
 🌾 无尽农村Farm Game
-
 **[中文](README.md) | [English](README.en.md)**
+
 一款完全由 AI 驱动生成的轻量农场模拟游戏，UI 基于 Google Material 3 设计规范。
 
 🎮 立即游玩 → https://weilinfbk.github.io/farmgame/
