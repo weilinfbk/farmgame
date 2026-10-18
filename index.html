@@ -18,22 +18,19 @@
     --red: #e06b6b;
     --blue: #6fa8dc;
   }
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
+  html, body { height: 100%; overflow: hidden; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
-    background: radial-gradient(circle at 50% 0%, #22342a 0%, var(--bg) 70%);
+    background: radial-gradient(circle at 50% 0%, #22342a 0%, #16211a 70%);
     color: var(--text);
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    transition: background 1.2s ease;
   }
   #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
-  /* ---------- 顶栏 ---------- */
   header {
     flex: 0 0 auto;
     display: flex; align-items: center; gap: 8px;
@@ -44,13 +41,9 @@
   }
   .stat {
     display: flex; align-items: center; gap: 4px;
-    background: #14201a;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 4px 9px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
+    background: #14201a; border: 1px solid var(--border);
+    border-radius: 8px; padding: 4px 9px;
+    font-size: 13px; font-weight: 600; white-space: nowrap;
   }
   .stat .ico { font-size: 14px; }
   #moneyEl { color: var(--gold); }
@@ -62,37 +55,18 @@
   }
   .icon-btn:active { transform: scale(.94); }
 
-  /* ---------- 主区域 ---------- */
   main {
     flex: 1 1 auto;
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    overflow: hidden;
-    min-height: 0;
+    display: flex; gap: 10px; padding: 10px;
+    overflow: hidden; min-height: 0;
   }
-  .left {
-    flex: 1 1 auto;
-    display: flex; flex-direction: column;
-    min-width: 0; min-height: 0;
-    gap: 8px;
-  }
-  .toolbar {
-    display: flex; gap: 6px; flex: 0 0 auto;
-    flex-wrap: wrap;
-  }
+  .left { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; min-height: 0; gap: 8px; }
+  .toolbar { display: flex; gap: 6px; flex: 0 0 auto; flex-wrap: wrap; }
   .tool {
-    flex: 1 1 0;
-    background: var(--panel);
-    border: 2px solid var(--border);
-    color: var(--text);
-    border-radius: 10px;
-    padding: 8px 4px;
-    font-size: 13px; font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all .12s;
-    white-space: nowrap;
+    flex: 1 1 0; background: var(--panel); border: 2px solid var(--border);
+    color: var(--text); border-radius: 10px; padding: 8px 4px;
+    font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer;
+    transition: all .12s; white-space: nowrap;
   }
   .tool.active {
     background: linear-gradient(180deg, #3d6b46, #2d5235);
@@ -102,33 +76,20 @@
   .tool:active { transform: scale(.96); }
 
   .farm-scroll {
-    flex: 1 1 auto;
-    overflow: auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    min-height: 0;
-    padding-bottom: 4px;
+    flex: 1 1 auto; overflow: auto; display: flex;
+    align-items: flex-start; justify-content: center;
+    min-height: 0; padding-bottom: 4px;
   }
   #farm {
-    display: grid;
-    gap: 4px;
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
+    display: grid; gap: 4px; width: 100%;
+    max-width: 560px; margin: 0 auto;
   }
   .tile {
-    aspect-ratio: 1 / 1;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(15px, 3.6vw, 26px);
-    cursor: pointer;
-    position: relative;
-    transition: transform .08s, filter .15s;
-    line-height: 1;
-    overflow: hidden;
+    aspect-ratio: 1 / 1; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(15px, 3.6vw, 26px); cursor: pointer;
+    position: relative; transition: transform .08s, filter .15s;
+    line-height: 1; overflow: hidden;
   }
   .tile:active { transform: scale(.9); filter: brightness(1.25); }
   .tile.grass { background: linear-gradient(160deg, #46703f, #33562f); box-shadow: inset 0 0 0 1px #2a4527; }
@@ -146,44 +107,28 @@
     50% { box-shadow: inset 0 0 0 2px #ffe07a, 0 0 16px rgba(245,197,66,.7); }
   }
   .tile.locked {
-    background: #14201a;
-    box-shadow: inset 0 0 0 1px #223028;
-    opacity: .5;
-    font-size: 14px;
-    cursor: default;
+    background: #14201a; box-shadow: inset 0 0 0 1px #223028;
+    opacity: .5; font-size: 14px; cursor: default;
   }
-  .tile .water-dot {
-    position: absolute; right: 3px; bottom: 2px;
-    font-size: 9px; opacity: .9;
-  }
+  .tile .water-dot { position: absolute; right: 3px; bottom: 2px; font-size: 9px; opacity: .9; }
 
-  /* ---------- 右侧面板 ---------- */
   .panel {
-    flex: 0 0 340px;
-    display: flex; flex-direction: column;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    min-height: 0;
+    flex: 0 0 340px; display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; min-height: 0;
   }
   .tabs {
     display: flex; flex: 0 0 auto;
-    background: #17241c;
-    border-bottom: 1px solid var(--border);
+    background: #17241c; border-bottom: 1px solid var(--border);
   }
   .tab {
     flex: 1; background: none; border: none; color: var(--dim);
     padding: 9px 2px; font-size: 12px; font-family: inherit;
-    cursor: pointer; border-bottom: 2px solid transparent;
-    font-weight: 600;
+    cursor: pointer; border-bottom: 2px solid transparent; font-weight: 600;
   }
   .tab.active { color: var(--green); border-bottom-color: var(--green); background: #1e2c22; }
   #panelContent {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding: 10px;
-    min-height: 0;
+    flex: 1 1 auto; overflow-y: auto; padding: 10px; min-height: 0;
   }
   #panelContent::-webkit-scrollbar { width: 6px; }
   #panelContent::-webkit-scrollbar-thumb { background: #35513c; border-radius: 3px; }
@@ -196,11 +141,8 @@
 
   .item-row {
     display: flex; align-items: center; gap: 7px;
-    background: var(--panel2);
-    border: 1px solid #2e4234;
-    border-radius: 8px;
-    padding: 7px 9px;
-    margin-bottom: 5px;
+    background: var(--panel2); border: 1px solid #2e4234;
+    border-radius: 8px; padding: 7px 9px; margin-bottom: 5px;
     font-size: 13px;
   }
   .item-emoji { font-size: 17px; width: 22px; text-align: center; }
@@ -211,8 +153,7 @@
   .mini-btn {
     background: #33513b; border: 1px solid #446b4e; color: var(--text);
     border-radius: 6px; padding: 4px 8px; font-size: 11px;
-    font-family: inherit; cursor: pointer; font-weight: 600;
-    white-space: nowrap;
+    font-family: inherit; cursor: pointer; font-weight: 600; white-space: nowrap;
   }
   .mini-btn:active { transform: scale(.93); }
   .mini-btn.buy { background: #3d5a2a; border-color: #5c8a3c; }
@@ -226,8 +167,7 @@
   .big-btn {
     width: 100%; padding: 14px;
     background: linear-gradient(180deg, #3d6b46, #2d5235);
-    border: 2px solid var(--green);
-    color: #fff; border-radius: 10px;
+    border: 2px solid var(--green); color: #fff; border-radius: 10px;
     font-size: 15px; font-weight: 700; font-family: inherit;
     cursor: pointer; margin-bottom: 8px;
   }
@@ -235,8 +175,7 @@
   .big-btn:disabled { opacity: .4; }
 
   .bar-wrap {
-    height: 8px; background: #14201a; border-radius: 4px; overflow: hidden;
-    margin-top: 4px;
+    height: 8px; background: #14201a; border-radius: 4px; overflow: hidden; margin-top: 4px;
   }
   .bar-fill { height: 100%; background: linear-gradient(90deg, #5ec46a, #8ee69a); transition: width .3s; }
 
@@ -248,83 +187,60 @@
   .quest-head { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 600; }
   .quest-reward { color: var(--gold); font-size: 11px; }
 
-  /* ---------- Toast ---------- */
   #toasts {
     position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%);
     display: flex; flex-direction: column-reverse; align-items: center; gap: 6px;
     pointer-events: none; z-index: 300; width: 90%; max-width: 420px;
   }
   .toast {
-    background: rgba(20,32,26,.96);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 13px; font-weight: 600;
+    background: rgba(20,32,26,.96); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600;
     box-shadow: 0 6px 20px rgba(0,0,0,.5);
-    animation: toastIn .2s ease-out;
-    text-align: center;
+    animation: toastIn .2s ease-out; text-align: center;
   }
   .toast.out { opacity: 0; transform: translateY(-6px); transition: all .3s; }
   @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
 
-  /* ---------- 钓鱼弹窗 ---------- */
   .modal {
-    position: fixed; inset: 0;
-    background: rgba(8,14,10,.85);
+    position: fixed; inset: 0; background: rgba(8,14,10,.85);
     display: flex; align-items: center; justify-content: center;
-    z-index: 250; padding: 16px;
-    backdrop-filter: blur(3px);
+    z-index: 250; padding: 16px; backdrop-filter: blur(3px);
   }
   .modal.hidden { display: none; }
   .modal-box {
     background: linear-gradient(180deg, #22362a, #1a2820);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    width: 100%; max-width: 400px;
-    text-align: center;
+    border: 2px solid var(--border); border-radius: 14px;
+    padding: 20px; width: 100%; max-width: 400px; text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,.7);
   }
   #fishTitle { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
   #fishMsg { font-size: 13px; color: var(--dim); min-height: 34px; margin: 10px 0; line-height: 1.5; }
   #fishBar {
-    position: relative;
-    height: 42px;
-    background: #0e1812;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 14px 0;
+    position: relative; height: 42px; background: #0e1812;
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; margin: 14px 0;
   }
   #fishBar.hidden { display: none; }
   #fishTarget {
     position: absolute; top: 0; bottom: 0;
-    background: linear-gradient(180deg, #6fe07a, #2f9b45);
-    border-radius: 4px;
+    background: linear-gradient(180deg, #6fe07a, #2f9b45); border-radius: 4px;
   }
   #fishPointer {
-    position: absolute; top: -2px; bottom: -2px;
-    width: 5px;
-    background: #fff;
-    box-shadow: 0 0 10px #fff, 0 0 20px rgba(255,255,255,.6);
-    transform: translateX(-50%);
-    border-radius: 3px;
+    position: absolute; top: -2px; bottom: -2px; width: 5px;
+    background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px rgba(255,255,255,.6);
+    transform: translateX(-50%); border-radius: 3px;
   }
 
   .day-overlay {
-    position: fixed; inset: 0;
-    background: rgba(8,14,10,.9);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    z-index: 280; gap: 10px;
-    animation: fadeIn .3s;
+    position: fixed; inset: 0; background: rgba(8,14,10,.9);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 280; gap: 10px; animation: fadeIn .3s;
   }
   @keyframes fadeIn { from { opacity: 0; } }
   .day-overlay .big-emoji { font-size: 64px; }
   .day-overlay .big-text { font-size: 26px; font-weight: 800; }
   .day-overlay .sub { color: var(--dim); font-size: 14px; }
 
-  /* ---------- 移动端 ---------- */
   @media (max-width: 820px) {
     main { flex-direction: column; padding: 8px; gap: 8px; }
     .panel { flex: 0 0 auto; height: 42%; min-height: 200px; }
@@ -341,7 +257,7 @@
     <div class="stat"><span class="ico">📅</span><span id="dayEl">第 1 天</span></div>
     <div class="stat"><span class="ico">🕐</span><span id="timeEl">06:00</span></div>
     <div class="stat"><span class="ico" id="weatherIco">☀️</span><span id="weatherEl">晴天</span></div>
-    <div class="stat"><span class="ico">💰</span><span id="moneyEl">500</span></div>
+    <div class="stat"><span class="ico">💰</span><span id="moneyEl">0</span></div>
     <div class="stat"><span class="ico">💧</span><span id="waterEl">30/30</span></div>
     <div class="spacer"></div>
     <button class="icon-btn" id="pauseBtn">⏸</button>
@@ -390,13 +306,15 @@
 
 <script>
 /* ============================================================
-   🌾 无尽农场  —  单文件农场经营游戏
+   🌾 无尽农场  —  单文件农场经营游戏 v2
    ============================================================ */
-
-// ---------------- 数据定义 ----------------
 
 const GRID_W = 8;
 const GRID_H = 8;
+
+const ROD_PRICE   = 150;   // 钓鱼竿价格
+const BAIT_PRICE  = 12;    // 鱼饵单价
+const BAIT_LIMIT  = 5;     // 每日鱼饵限购
 
 const CROPS = {
   turnip:     { name:'萝卜',    emoji:'🥬', days:2,  seed:20,   sell:45,    xp:6,   lv:1  },
@@ -430,15 +348,13 @@ const FISH = {
 };
 
 const WEATHER = {
-  sunny:  { name:'晴天', emoji:'☀️', color:'#f5c542' },
-  cloudy: { name:'阴天', emoji:'☁️', color:'#9aa9b5' },
-  rain:   { name:'雨天', emoji:'🌧️', color:'#6fa8dc', waters:true },
-  storm:  { name:'暴雨', emoji:'⛈️', color:'#5b7fa8', waters:true, rareBonus:true },
-  hot:    { name:'酷暑', emoji:'🔥', color:'#e06666', rareBonus:true },
-  wind:   { name:'大风', emoji:'🌬️', color:'#a8c3b0' },
+  sunny:  { name:'晴天', emoji:'☀️', color:'#f5c542', sky:['#2c4f33', '#16211a'] },
+  cloudy: { name:'阴天', emoji:'☁️', color:'#9aa9b5', sky:['#3a4649', '#1a2024'] },
+  rain:   { name:'雨天', emoji:'🌧️', color:'#6fa8dc', waters:true, sky:['#2a3d4a', '#131d24'] },
+  storm:  { name:'暴雨', emoji:'⛈️', color:'#5b7fa8', waters:true, rareBonus:true, sky:['#232f3d', '#0e141a'] },
+  hot:    { name:'酷暑', emoji:'🔥', color:'#e06666', rareBonus:true, sky:['#4a3020', '#1f1410'] },
+  wind:   { name:'大风', emoji:'🌬️', color:'#a8c3b0', sky:['#3a4a42', '#18211c'] },
 };
-
-// ---------------- 工具函数 ----------------
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.floor(n).toLocaleString('zh-CN');
@@ -446,6 +362,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
 
 function basePrice(id) {
+  if (id === 'bait') return BAIT_PRICE;
   if (id.startsWith('seed_')) { const c = CROPS[id.slice(5)]; return c ? c.seed : 10; }
   if (id.startsWith('crop_')) { const c = CROPS[id.slice(5)]; return c ? c.sell : 10; }
   if (id.startsWith('fish_')) { const f = FISH[id.slice(5)]; return f ? f.price : 10; }
@@ -453,6 +370,7 @@ function basePrice(id) {
 }
 
 function itemInfo(id) {
+  if (id === 'bait') return { name:'鱼饵', emoji:'🪱', type:'bait' };
   if (id.startsWith('seed_')) {
     const c = CROPS[id.slice(5)];
     return { name: (c ? c.name : '?') + '种子', emoji: '🌱', type: 'seed', cropId: id.slice(5) };
@@ -468,35 +386,30 @@ function itemInfo(id) {
   return { name: '未知', emoji: '❓', type: 'other' };
 }
 
-// ---------------- 存档状态 ----------------
+/* ---------------- 存档 ---------------- */
 
 const SAVE_KEY = 'infinite_farm_save_v1';
-const SAVE_VER = 1;
+const SAVE_VER = 2;
 
 function defaultState() {
   const tiles = [];
   for (let y = 0; y < GRID_H; y++) {
     for (let x = 0; x < GRID_W; x++) {
-      tiles.push({
-        x, y,
-        unlocked: y < 2,
-        tilled: false,
-        watered: false,
-        crop: null,
-      });
+      tiles.push({ x, y, unlocked: y < 2, tilled: false, watered: false, crop: null });
     }
   }
   return {
     day: 1,
     time: 6 * 60,
-    money: 500,
+    money: 0,                  // 开局不给金币
     weather: 'sunny',
     tiles,
     inv: { seed_turnip: 8, seed_carrot: 4 },
     water: 30,
     waterMax: 30,
-    rodLvl: 1,
+    rodLvl: 0,                 // 0 = 尚未购买钓鱼竿
     canLvl: 1,
+    baitBought: 0,             // 今日已购买鱼饵数量
     selectedTool: 'hoe',
     selectedSeed: null,
     skills: {
@@ -518,10 +431,7 @@ function saveGame() {
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({ v: SAVE_VER, state }));
     return true;
-  } catch (e) {
-    console.warn('保存失败', e);
-    return false;
-  }
+  } catch (e) { console.warn('保存失败', e); return false; }
 }
 
 function loadGame() {
@@ -532,7 +442,6 @@ function loadGame() {
     if (!data || data.v !== SAVE_VER || !data.state) return false;
     const def = defaultState();
     const merged = Object.assign(def, data.state);
-    // 补全嵌套对象
     merged.skills = Object.assign(def.skills, data.state.skills || {});
     merged.stats  = Object.assign(def.stats,  data.state.stats  || {});
     merged.inv    = data.state.inv || {};
@@ -542,13 +451,10 @@ function loadGame() {
       ? data.state.tiles : def.tiles;
     state = merged;
     return true;
-  } catch (e) {
-    console.warn('读档失败', e);
-    return false;
-  }
+  } catch (e) { console.warn('读档失败', e); return false; }
 }
 
-// ---------------- 技能 / 经验 ----------------
+/* ---------------- 技能 ---------------- */
 
 function xpNeed(lvl) { return Math.floor(100 * Math.pow(1.38, lvl - 1)); }
 
@@ -557,11 +463,7 @@ function addXp(skill, amount) {
   if (!s) return;
   s.xp += amount;
   let leveled = false;
-  while (s.xp >= xpNeed(s.lvl)) {
-    s.xp -= xpNeed(s.lvl);
-    s.lvl++;
-    leveled = true;
-  }
+  while (s.xp >= xpNeed(s.lvl)) { s.xp -= xpNeed(s.lvl); s.lvl++; leveled = true; }
   if (leveled) {
     const names = { farm: '农业', fish: '钓鱼', trade: '商业' };
     toast(`🎉 ${names[skill]}等级提升到 Lv.${s.lvl}！`, 2200);
@@ -569,7 +471,7 @@ function addXp(skill, amount) {
   }
 }
 
-// ---------------- 天气 ----------------
+/* ---------------- 天气 ---------------- */
 
 function rollWeather() {
   const r = Math.random();
@@ -581,18 +483,13 @@ function rollWeather() {
   return 'wind';
 }
 
-// ---------------- 市场 ----------------
+/* ---------------- 市场 ---------------- */
 
 function rollMarket() {
   state.market = {};
-  Object.keys(CROPS).forEach(id => {
-    state.market['crop_' + id] = rand(0.80, 1.30);
-  });
-  Object.keys(FISH).forEach(id => {
-    state.market['fish_' + id] = rand(0.80, 1.30);
-  });
+  Object.keys(CROPS).forEach(id => { state.market['crop_' + id] = rand(0.80, 1.30); });
+  Object.keys(FISH).forEach(id => { state.market['fish_' + id] = rand(0.80, 1.30); });
 
-  // 今日热门商品（3 倍价）
   state.demand = [];
   const pool = Object.keys(CROPS).filter(id => state.skills.farm.lvl >= CROPS[id].lv - 2);
   const n = Math.min(2, pool.length);
@@ -610,18 +507,15 @@ function sellPriceOf(id) {
   return Math.max(1, Math.floor(base * m * demandMul * tradeBonus));
 }
 
-// ---------------- 任务 ----------------
+/* ---------------- 任务 ---------------- */
 
 function newQuests() {
   const fl = state.skills.farm.lvl;
   const fis = state.skills.fish.lvl;
   state.quests = [
-    { id:'harvest', progress:0, target: 5 + fl * 2,
-      reward: 120 + fl * 45, desc: n => `收获 ${n} 个作物` },
-    { id:'fish', progress:0, target: 2 + Math.floor(fis / 2),
-      reward: 160 + fis * 60, desc: n => `钓到 ${n} 条鱼` },
-    { id:'earn', progress:0, target: 400 + fl * 220,
-      reward: 250 + fl * 70, desc: n => `通过卖东西赚取 ${fmt(n)} 金币` },
+    { id:'harvest', progress:0, target: 5 + fl * 2, reward: 120 + fl * 45, desc: n => `收获 ${n} 个作物` },
+    { id:'fish', progress:0, target: 2 + Math.floor(fis / 2), reward: 160 + fis * 60, desc: n => `钓到 ${n} 条鱼` },
+    { id:'earn', progress:0, target: 400 + fl * 220, reward: 250 + fl * 70, desc: n => `通过卖东西赚取 ${fmt(n)} 金币` },
   ];
   state.questsDay = state.day;
 }
@@ -637,11 +531,9 @@ function addQuestProgress(type, amount) {
   if (changed && currentTab === 'quest') renderPanel();
 }
 
-// ---------------- 背包 ----------------
+/* ---------------- 背包 ---------------- */
 
-function addItem(id, n = 1) {
-  state.inv[id] = (state.inv[id] || 0) + n;
-}
+function addItem(id, n = 1) { state.inv[id] = (state.inv[id] || 0) + n; }
 function removeItem(id, n = 1) {
   if (!state.inv[id] || state.inv[id] < n) return false;
   state.inv[id] -= n;
@@ -649,7 +541,7 @@ function removeItem(id, n = 1) {
   return true;
 }
 
-// ---------------- Toast ----------------
+/* ---------------- Toast ---------------- */
 
 function toast(msg, dur = 1600) {
   const box = $('toasts');
@@ -661,11 +553,10 @@ function toast(msg, dur = 1600) {
     el.classList.add('out');
     setTimeout(() => el.remove(), 320);
   }, dur);
-  // 防止堆积
   while (box.children.length > 5) box.firstChild.remove();
 }
 
-// ---------------- 渲染：顶栏 ----------------
+/* ---------------- 顶栏 & 背景 ---------------- */
 
 function renderTop() {
   $('dayEl').textContent = `第 ${state.day} 天`;
@@ -678,9 +569,14 @@ function renderTop() {
   $('weatherEl').textContent = w.name;
   $('weatherIco').textContent = w.emoji;
   $('waterEl').textContent = `${state.water}/${state.waterMax}`;
+
+  // 天气决定背景
+  const sky = w.sky || ['#2c4f33', '#16211a'];
+  document.body.style.background =
+    `radial-gradient(circle at 50% 0%, ${sky[0]} 0%, ${sky[1]} 70%)`;
 }
 
-// ---------------- 渲染：农场 ----------------
+/* ---------------- 农场 ---------------- */
 
 const farmEl = $('farm');
 let tileEls = [];
@@ -707,15 +603,13 @@ function updateFarm() {
     let html = '';
 
     if (!t.unlocked) {
-      cls += ' locked';
-      html = '🔒';
+      cls += ' locked'; html = '🔒';
     } else if (t.crop) {
       const c = CROPS[t.crop.id];
       cls += ' planted';
       if (t.watered) cls += ' watered';
       if (t.crop.growth >= c.days) {
-        cls += ' ready';
-        html = c.emoji;
+        cls += ' ready'; html = c.emoji;
       } else {
         const p = t.crop.growth / c.days;
         html = p < 0.45 ? '🌱' : '🌿';
@@ -732,60 +626,41 @@ function updateFarm() {
   });
 }
 
-// ---------------- 农场交互 ----------------
+/* ---------------- 农场交互 ---------------- */
 
 function onTileClick(i) {
   const t = state.tiles[i];
-  if (!t.unlocked) {
-    toast('这块地还没有解锁，去商店扩展农场吧');
-    return;
-  }
+  if (!t.unlocked) { toast('这块地还没有解锁，去商店扩展农场吧'); return; }
 
-  // 成熟作物自动收获（无论当前工具）
-  if (t.crop && t.crop.growth >= CROPS[t.crop.id].days) {
-    harvest(i);
-    return;
-  }
+  if (t.crop && t.crop.growth >= CROPS[t.crop.id].days) { harvest(i); return; }
 
   const tool = state.selectedTool;
 
   if (tool === 'hoe') {
     if (t.crop) { toast('这里有作物在生长'); return; }
     if (t.tilled) { toast('已经开垦过了'); return; }
-    t.tilled = true;
-    t.watered = false;
+    t.tilled = true; t.watered = false;
     addXp('farm', 2);
     updateFarm();
   } else if (tool === 'water') {
     if (!t.tilled) { toast('先用锄头开垦这块地'); return; }
     if (t.watered) { toast('已经浇过水了'); return; }
     if (state.water <= 0) { toast('💧 水壶空了！明天会自动装满'); return; }
-    state.water--;
-    t.watered = true;
+    state.water--; t.watered = true;
     addXp('farm', 1);
-    updateFarm();
-    renderTop();
+    updateFarm(); renderTop();
   } else if (tool === 'seed') {
-    if (!state.selectedSeed) {
-      toast('请先在背包里选择一种种子');
-      return;
-    }
+    if (!state.selectedSeed) { toast('请先在背包里选择一种种子'); return; }
     if (!t.tilled) { toast('先用锄头开垦这块地'); return; }
     if (t.crop) { toast('这块地已经有作物了'); return; }
     const sid = state.selectedSeed;
-    if (!state.inv[sid]) {
-      toast('种子不足');
-      state.selectedSeed = null;
-      refresh();
-      return;
-    }
+    if (!state.inv[sid]) { toast('种子不足'); state.selectedSeed = null; refresh(); return; }
     const cropId = sid.slice(5);
     removeItem(sid, 1);
     t.crop = { id: cropId, growth: 0 };
     state.stats.planted++;
     if (!state.inv[sid]) state.selectedSeed = null;
-    updateFarm();
-    refresh();
+    updateFarm(); refresh();
   }
 }
 
@@ -805,49 +680,38 @@ function harvest(i) {
   state.stats.harvest += qty;
   addQuestProgress('harvest', qty);
 
-  t.crop = null;
-  t.tilled = true;
-  t.watered = false;
+  t.crop = null; t.tilled = true; t.watered = false;
 
   toast(`${c.emoji} 收获 ${c.name} ×${qty}`, 1400);
-  updateFarm();
-  refresh();
-  saveGame();
+  updateFarm(); refresh(); saveGame();
 }
 
-// ---------------- 时间循环 ----------------
+/* ---------------- 时间循环 ---------------- */
 
 let paused = false;
 let lastTick = performance.now();
 let timeAccum = 0;
-const MS_PER_GAME_MIN = 100;   // 每 100ms 推进 1 游戏分钟
+const MS_PER_GAME_MIN = 100;
 
 function tick(ts) {
   requestAnimationFrame(tick);
   const dt = Math.min(300, ts - lastTick);
   lastTick = ts;
-
   if (paused || document.hidden) return;
 
   timeAccum += dt;
   let added = 0;
-  while (timeAccum >= MS_PER_GAME_MIN) {
-    timeAccum -= MS_PER_GAME_MIN;
-    added++;
-  }
+  while (timeAccum >= MS_PER_GAME_MIN) { timeAccum -= MS_PER_GAME_MIN; added++; }
   if (added > 0) {
     state.time += added;
-    if (state.time >= 24 * 60) {
-      endDay(true);
-    }
+    if (state.time >= 24 * 60) endDay(true);
     renderTop();
   }
 }
 
-// ---------------- 日结算 ----------------
+/* ---------------- 日结算 ---------------- */
 
 function endDay(auto) {
-  // 1. 生长结算
   state.tiles.forEach(t => {
     if (t.crop && t.watered) {
       const c = CROPS[t.crop.id];
@@ -855,35 +719,22 @@ function endDay(auto) {
     }
   });
 
-  // 2. 进入新的一天
   state.day++;
   state.stats.days++;
   state.time = 6 * 60;
   state.water = state.waterMax;
+  state.baitBought = 0;          // 重置鱼饵限购
 
-  // 3. 新天气
   state.weather = rollWeather();
   const w = WEATHER[state.weather];
 
-  // 4. 重置浇水
   state.tiles.forEach(t => { t.watered = false; });
+  if (w.waters) state.tiles.forEach(t => { if (t.tilled) t.watered = true; });
 
-  // 5. 下雨自动浇水
-  if (w.waters) {
-    state.tiles.forEach(t => { if (t.tilled) t.watered = true; });
-  }
-
-  // 6. 刷新市场 / 任务
   rollMarket();
   newQuests();
 
-  // 7. 更新界面
-  updateFarm();
-  renderTop();
-  refresh();
-  saveGame();
-
-  // 8. 日结算动画
+  updateFarm(); renderTop(); refresh(); saveGame();
   if (auto) showDayOverlay();
 }
 
@@ -904,16 +755,12 @@ function showDayOverlay() {
   }, 1100);
 }
 
-// ---------------- 面板渲染 ----------------
+/* ---------------- 面板 ---------------- */
 
 let currentTab = 'bag';
 const panelContent = $('panelContent');
 
-function refresh() {
-  renderTop();
-  updateFarm();
-  renderPanel();
-}
+function refresh() { renderTop(); updateFarm(); renderPanel(); }
 
 function renderPanel() {
   switch (currentTab) {
@@ -925,15 +772,12 @@ function renderPanel() {
   }
 }
 
-// ---- 背包 ----
+/* ---- 背包 ---- */
 function renderBag() {
   const entries = Object.entries(state.inv).filter(([k, v]) => v > 0);
-  if (!entries.length) {
-    return '<div class="empty">背包空空如也<br>去 🏪 商店买些种子开始吧</div>';
-  }
+  if (!entries.length) return '<div class="empty">背包空空如也<br>去 🏪 商店买些种子开始吧</div>';
 
-  // 排序：种子 → 作物 → 鱼
-  const order = { seed: 0, crop: 1, fish: 2, other: 3 };
+  const order = { seed: 0, crop: 1, fish: 2, bait: 3, other: 4 };
   entries.sort((a, b) => {
     const ia = itemInfo(a[0]), ib = itemInfo(b[0]);
     return (order[ia.type] - order[ib.type]) || ia.name.localeCompare(ib.name);
@@ -946,6 +790,8 @@ function renderBag() {
     let btn = '';
     if (info.type === 'seed') {
       btn = `<button class="mini-btn" data-act="selectSeed" data-id="${id}" style="${selected ? 'background:#5ec46a;color:#0d1a10;border-color:#8ee69a;' : ''}">${selected ? '✓已选' : '选择'}</button>`;
+    } else if (info.type === 'bait') {
+      btn = `<span class="item-sub">钓鱼消耗</span>`;
     } else {
       btn = `<button class="mini-btn sell" data-act="sellOne" data-id="${id}">卖 ${fmt(sellPriceOf(id))}</button>`;
     }
@@ -961,7 +807,6 @@ function renderBag() {
   html += skillRow('🌾 农业', state.skills.farm, '解锁作物 · 双倍收获');
   html += skillRow('🎣 钓鱼', state.skills.fish, '更大判定区 · 稀有鱼');
   html += skillRow('💼 商业', state.skills.trade, '售价加成');
-
   return html;
 }
 
@@ -978,11 +823,43 @@ function skillRow(name, s, desc) {
   </div>`;
 }
 
-// ---- 商店 ----
+/* ---- 商店 ---- */
 function renderShop() {
   const fl = state.skills.farm.lvl;
-  let html = '<div class="sec-title">🌱 种子</div>';
+  let html = '<div class="sec-title">🎣 钓鱼用品</div>';
 
+  // 鱼竿
+  if (state.rodLvl === 0) {
+    html += `<div class="item-row">
+      <span class="item-emoji">🎣</span>
+      <span class="item-name">钓鱼竿
+        <div class="item-sub">购买后才能开始钓鱼</div>
+      </span>
+      <button class="mini-btn buy" data-act="buyRod" ${state.money >= ROD_PRICE ? '' : 'disabled'}>${fmt(ROD_PRICE)}</button>
+    </div>`;
+  } else {
+    const rodCost = Math.floor(350 * Math.pow(1.9, state.rodLvl - 1));
+    html += `<div class="item-row">
+      <span class="item-emoji">🎣</span>
+      <span class="item-name">鱼竿 Lv.${state.rodLvl}
+        <div class="item-sub">判定区 +2.5% · 稀有鱼几率提升</div>
+      </span>
+      <button class="mini-btn buy" data-act="upRod" ${state.money >= rodCost ? '' : 'disabled'}>${fmt(rodCost)}</button>
+    </div>`;
+  }
+
+  // 鱼饵
+  const remain = BAIT_LIMIT - (state.baitBought || 0);
+  html += `<div class="item-row">
+    <span class="item-emoji">🪱</span>
+    <span class="item-name">鱼饵
+      <div class="item-sub">今日剩余 ${remain}/${BAIT_LIMIT} 个 · 每次钓鱼消耗 1 个</div>
+    </span>
+    <button class="mini-btn buy" data-act="buyBait" data-n="1" ${remain > 0 && state.money >= BAIT_PRICE ? '' : 'disabled'}>${fmt(BAIT_PRICE)}</button>
+    <button class="mini-btn buy" data-act="buyBait" data-n="5" ${remain >= 5 && state.money >= BAIT_PRICE * 5 ? '' : 'disabled'}>×5</button>
+  </div>`;
+
+  html += '<div class="sec-title">🌱 种子</div>';
   Object.entries(CROPS).forEach(([id, c]) => {
     const locked = fl < c.lv;
     const price = c.seed;
@@ -999,7 +876,6 @@ function renderShop() {
 
   html += '<div class="sec-title">🛠️ 工具升级</div>';
 
-  // 水壶
   const canCost = Math.floor(250 * Math.pow(1.9, state.canLvl - 1));
   html += `<div class="item-row">
     <span class="item-emoji">💧</span>
@@ -1009,17 +885,6 @@ function renderShop() {
     <button class="mini-btn buy" data-act="upCan" ${state.money >= canCost ? '' : 'disabled'}>${fmt(canCost)}</button>
   </div>`;
 
-  // 鱼竿
-  const rodCost = Math.floor(350 * Math.pow(1.9, state.rodLvl - 1));
-  html += `<div class="item-row">
-    <span class="item-emoji">🎣</span>
-    <span class="item-name">鱼竿 Lv.${state.rodLvl}
-      <div class="item-sub">判定区 +2.5% · 稀有鱼几率提升</div>
-    </span>
-    <button class="mini-btn buy" data-act="upRod" ${state.money >= rodCost ? '' : 'disabled'}>${fmt(rodCost)}</button>
-  </div>`;
-
-  // 土地扩展
   const rows = state.tiles.filter(t => t.unlocked).length / GRID_W;
   if (rows < GRID_H) {
     const landCost = Math.floor(900 * Math.pow(2.1, rows - 2));
@@ -1044,7 +909,7 @@ function renderShop() {
   return html;
 }
 
-// ---- 市场 ----
+/* ---- 市场 ---- */
 function renderMarket() {
   const sellable = [];
   Object.keys(CROPS).forEach(id => {
@@ -1058,7 +923,6 @@ function renderMarket() {
 
   let html = '';
 
-  // 热门商品提示
   if (state.demand.length) {
     const names = state.demand.map(id => {
       const c = CROPS[id.slice(5)];
@@ -1099,23 +963,29 @@ function renderMarket() {
   return html;
 }
 
-// ---- 钓鱼面板 ----
+/* ---- 钓鱼 ---- */
 function renderFishPanel() {
+  if (state.rodLvl === 0) {
+    return `<div class="empty">🎣 你还没有钓鱼竿<br><br>去 🏪 商店购买钓鱼竿和鱼饵<br>然后才能开始钓鱼</div>`;
+  }
+
+  const baitCount = state.inv['bait'] || 0;
   const caught = Object.keys(FISH).filter(id => state.inv['fish_' + id])
     .map(id => ({ id, n: state.inv['fish_' + id], f: FISH[id] }));
-  const totalFish = state.stats.fish;
   const rarityColors = ['', '#9aa9b5', '#5ec46a', '#6fa8dc', '#c78ef0', '#f5a742', '#ff5e5e'];
 
   let html = `
   <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px;">
     <div style="display:flex;justify-content:space-between;font-weight:700;">
       <span>🎣 钓鱼 Lv.${state.skills.fish.lvl}</span>
-      <span class="item-sub">累计 ${totalFish} 条</span>
+      <span class="item-sub">累计 ${state.stats.fish} 条</span>
     </div>
     <div class="bar-wrap"><div class="bar-fill" style="width:${Math.min(100, state.skills.fish.xp / xpNeed(state.skills.fish.lvl) * 100)}%"></div></div>
-    <div class="item-sub">鱼竿 Lv.${state.rodLvl} · ${WEATHER[state.weather].name}</div>
+    <div class="item-sub">鱼竿 Lv.${state.rodLvl} · 🪱 鱼饵 ${baitCount} · ${WEATHER[state.weather].name}</div>
   </div>
-  <button class="big-btn" data-act="castRod">🎣 抛竿钓鱼</button>
+  <button class="big-btn" data-act="castRod" ${baitCount > 0 ? '' : 'disabled'}>
+    🎣 抛竿钓鱼${baitCount > 0 ? `（消耗 1 鱼饵）` : '（没有鱼饵）'}
+  </button>
   <div class="item-sub" style="text-align:center;margin-bottom:10px;">
     指针停在绿色区域内即可钓到鱼
   </div>
@@ -1141,7 +1011,7 @@ function renderFishPanel() {
   return html;
 }
 
-// ---- 任务面板 ----
+/* ---- 任务 ---- */
 function renderQuestPanel() {
   let html = '<div class="sec-title">📋 每日任务</div>';
   state.quests.forEach((q, idx) => {
@@ -1169,11 +1039,10 @@ function renderQuestPanel() {
     <div class="item-row"><span class="item-emoji">🌱</span><span class="item-name">累计播种</span><span class="item-count">${fmt(state.stats.planted)}</span></div>
     <div class="item-row"><span class="item-emoji">📅</span><span class="item-name">经营天数</span><span class="item-count">${fmt(state.day)}</span></div>
   `;
-
   return html;
 }
 
-// ---------------- 面板点击处理 ----------------
+/* ---------------- 面板点击 ---------------- */
 
 panelContent.addEventListener('click', e => {
   const btn = e.target.closest('[data-act]');
@@ -1184,54 +1053,65 @@ panelContent.addEventListener('click', e => {
   if (act === 'selectSeed') {
     state.selectedSeed = (state.selectedSeed === id) ? null : id;
     if (state.selectedSeed) state.selectedTool = 'seed';
-    updateToolButtons();
-    renderPanel();
+    updateToolButtons(); renderPanel();
     if (state.selectedSeed) toast('已选择种子，去田里点击播种吧');
   }
-  else if (act === 'sellOne') {
-    sellItem(id, 1);
-  }
-  else if (act === 'sellAll') {
-    sellItem(id, state.inv[id] || 0);
-  }
+  else if (act === 'sellOne') sellItem(id, 1);
+  else if (act === 'sellAll') sellItem(id, state.inv[id] || 0);
   else if (act === 'sellEverything') {
     let total = 0;
     Object.keys(state.inv).slice().forEach(itemId => {
       const info = itemInfo(itemId);
-      if (info.type === 'seed') return;
+      if (info.type === 'seed' || info.type === 'bait') return;
       const n = state.inv[itemId];
       if (!n) return;
-      total += sellPriceOf(itemId) * n;
-      state.money += sellPriceOf(itemId) * n;
-      state.stats.earned += sellPriceOf(itemId) * n;
+      const price = sellPriceOf(itemId);
+      total += price * n;
+      state.money += price * n;
+      state.stats.earned += price * n;
       delete state.inv[itemId];
     });
     if (total > 0) {
       addXp('trade', Math.max(1, Math.floor(total / 50)));
       addQuestProgress('earn', total);
       toast(`💰 全部出售，获得 ${fmt(total)} G`, 2000);
-      refresh();
-      saveGame();
+      refresh(); saveGame();
     }
   }
-  else if (act === 'buySeed') {
-    buySeed(id, parseInt(btn.dataset.n) || 1);
+  else if (act === 'buySeed') buySeed(id, parseInt(btn.dataset.n) || 1);
+  else if (act === 'buyRod') {
+    if (state.rodLvl > 0) return;
+    if (state.money < ROD_PRICE) return;
+    state.money -= ROD_PRICE;
+    state.rodLvl = 1;
+    toast('🎣 购买了钓鱼竿！现在可以钓鱼了', 2200);
+    refresh(); saveGame();
+  }
+  else if (act === 'buyBait') {
+    let n = parseInt(btn.dataset.n) || 1;
+    const remain = BAIT_LIMIT - (state.baitBought || 0);
+    n = Math.min(n, remain);
+    if (n <= 0) { toast('今日鱼饵已售罄，明天再来吧'); return; }
+    const cost = BAIT_PRICE * n;
+    if (state.money < cost) { toast('金币不够'); return; }
+    state.money -= cost;
+    state.baitBought = (state.baitBought || 0) + n;
+    addItem('bait', n);
+    toast(`🪱 购买鱼饵 ×${n}`, 1400);
+    refresh(); saveGame();
   }
   else if (act === 'upCan') {
     const cost = Math.floor(250 * Math.pow(1.9, state.canLvl - 1));
     if (state.money < cost) return;
-    state.money -= cost;
-    state.canLvl++;
-    state.waterMax += 20;
-    state.water = state.waterMax;
+    state.money -= cost; state.canLvl++;
+    state.waterMax += 20; state.water = state.waterMax;
     toast(`💧 水壶升级！容量 ${state.waterMax}`, 2000);
     refresh(); saveGame();
   }
   else if (act === 'upRod') {
     const cost = Math.floor(350 * Math.pow(1.9, state.rodLvl - 1));
     if (state.money < cost) return;
-    state.money -= cost;
-    state.rodLvl++;
+    state.money -= cost; state.rodLvl++;
     toast(`🎣 鱼竿升级到 Lv.${state.rodLvl}！`, 2000);
     refresh(); saveGame();
   }
@@ -1241,10 +1121,7 @@ panelContent.addEventListener('click', e => {
     const cost = Math.floor(900 * Math.pow(2.1, rows - 2));
     if (state.money < cost) return;
     state.money -= cost;
-    // 解锁下一行
-    state.tiles.forEach(t => {
-      if (t.y === rows) t.unlocked = true;
-    });
+    state.tiles.forEach(t => { if (t.y === rows) t.unlocked = true; });
     toast(`🗺️ 农场扩展！新增 ${GRID_W} 格土地`, 2000);
     refresh(); saveGame();
   }
@@ -1254,15 +1131,12 @@ panelContent.addEventListener('click', e => {
     state.money += q.reward;
     state.stats.earned += q.reward;
     q.progress = q.target;
-    q.target = -1; // 标记已领取
+    q.target = -1;
     toast(`🎁 领取任务奖励 ${fmt(q.reward)} G`, 1800);
-    // 移除已领取的任务
     state.quests = state.quests.filter(x => x.target !== -1);
     refresh(); saveGame();
   }
-  else if (act === 'castRod') {
-    openFishing();
-  }
+  else if (act === 'castRod') openFishing();
   else if (act === 'exportSave') {
     const code = btoa(unescape(encodeURIComponent(JSON.stringify({ v: SAVE_VER, state }))));
     prompt('复制下面的存档码保存好：', code);
@@ -1274,12 +1148,9 @@ panelContent.addEventListener('click', e => {
       const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
       if (!data || data.v !== SAVE_VER || !data.state) throw new Error('格式错误');
       state = Object.assign(defaultState(), data.state);
-      refresh();
-      saveGame();
+      refresh(); saveGame();
       toast('✅ 存档导入成功');
-    } catch (err) {
-      toast('❌ 存档码无效');
-    }
+    } catch (err) { toast('❌ 存档码无效'); }
   }
   else if (act === 'resetSave') {
     if (confirm('确定删除存档并重新开始吗？此操作不可恢复。')) {
@@ -1300,8 +1171,7 @@ function buySeed(cropId, n) {
   state.money -= total;
   addItem('seed_' + cropId, n);
   toast(`🌱 购买 ${c.name}种子 ×${n}`);
-  refresh();
-  saveGame();
+  refresh(); saveGame();
 }
 
 function sellItem(id, n) {
@@ -1317,11 +1187,10 @@ function sellItem(id, n) {
   addQuestProgress('earn', total);
   const info = itemInfo(id);
   toast(`💰 卖出 ${info.name} ×${n}，+${fmt(total)} G`);
-  refresh();
-  saveGame();
+  refresh(); saveGame();
 }
 
-// ---------------- 工具栏 ----------------
+/* ---------------- 工具栏 ---------------- */
 
 function updateToolButtons() {
   document.querySelectorAll('.tool').forEach(btn => {
@@ -1333,7 +1202,6 @@ document.querySelectorAll('.tool').forEach(btn => {
   btn.addEventListener('click', () => {
     state.selectedTool = btn.dataset.tool;
     if (state.selectedTool === 'seed' && !state.selectedSeed) {
-      // 自动选择第一个种子
       const firstSeed = Object.keys(state.inv).find(k => k.startsWith('seed_'));
       if (firstSeed) {
         state.selectedSeed = firstSeed;
@@ -1347,7 +1215,7 @@ document.querySelectorAll('.tool').forEach(btn => {
   });
 });
 
-// ---------------- 标签页 ----------------
+/* ---------------- 标签页 ---------------- */
 
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -1357,7 +1225,7 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
-// ---------------- 钓鱼系统 ----------------
+/* ---------------- 钓鱼 ---------------- */
 
 let fishing = null;
 let fishRAF = null;
@@ -1372,6 +1240,13 @@ const fishActionBtn = $('fishAction');
 
 function openFishing() {
   if (fishing) return;
+  if (state.rodLvl === 0) { toast('需要先在商店购买钓鱼竿'); return; }
+  if ((state.inv['bait'] || 0) <= 0) { toast('🪱 没有鱼饵了，去商店购买'); return; }
+
+  // 抛竿即消耗 1 个鱼饵
+  removeItem('bait', 1);
+  refresh();
+
   fishModal.classList.remove('hidden');
   fishBarEl.classList.add('hidden');
   fishMsgEl.textContent = '';
@@ -1388,26 +1263,37 @@ function openFishing() {
   }, wait);
 }
 
+/* 概率设计：
+   普通鱼（1-2 星）占绝大多数；
+   3 星及以上总计约 0.003%（万分之 0.3），鱼竿/等级/天气仅有微小加成。 */
 function pickFish() {
-  const rodLvl = state.rodLvl;
-  const fishLvl = state.skills.fish.lvl;
-  const rareBonus = WEATHER[state.weather].rareBonus ? 1.6 : 1;
+  const rodBonus   = (state.rodLvl - 1) * 0.10;
+  const fishLvlB   = (state.skills.fish.lvl - 1) * 0.03;
+  const weatherB   = WEATHER[state.weather].rareBonus ? 1.8 : 1;
+  const rareChance = 0.00003 * (1 + rodBonus + fishLvlB) * weatherB; // 0.003% 基准
 
-  const list = Object.entries(FISH).map(([id, f]) => {
-    let w = 1 / Math.pow(f.rarity, 2.2);
-    w *= 1 + (rodLvl - 1) * 0.40 * (f.rarity - 1);
-    w *= 1 + (fishLvl - 1) * 0.18 * (f.rarity - 1);
-    if (f.rarity >= 3) w *= rareBonus;
-    return { id, f, w };
-  });
-
-  const total = list.reduce((s, x) => s + x.w, 0);
-  let r = Math.random() * total;
-  for (const x of list) {
-    r -= x.w;
-    if (r <= 0) return { ...x.f, id: x.id };
+  if (Math.random() < rareChance) {
+    // 稀有鱼（3-6 星），越稀有越难出
+    const rares = Object.entries(FISH).filter(([, f]) => f.rarity >= 3);
+    const weights = rares.map(([, f]) => 1 / Math.pow(f.rarity, 4));
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < rares.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return { ...rares[i][1], id: rares[i][0] };
+    }
+    const last = rares[rares.length - 1];
+    return { ...last[1], id: last[0] };
   }
-  return { ...FISH.crucian, id: 'crucian' };
+
+  // 普通鱼：1 星为主，2 星较少
+  const ones = Object.entries(FISH).filter(([, f]) => f.rarity === 1);
+  const twos = Object.entries(FISH).filter(([, f]) => f.rarity === 2);
+  let p2 = 0.22 + (state.rodLvl - 1) * 0.03 + (state.skills.fish.lvl - 1) * 0.01;
+  p2 = Math.min(0.55, p2);
+  const group = (Math.random() < p2) ? twos : ones;
+  const pick = group[Math.floor(Math.random() * group.length)];
+  return { ...pick[1], id: pick[0] };
 }
 
 function startBite() {
@@ -1486,8 +1372,7 @@ function stopFishing() {
     fishing.phase = 'done';
     fishBarEl.classList.add('hidden');
     fishActionBtn.textContent = '再来一次';
-    refresh();
-    saveGame();
+    refresh(); saveGame();
     return;
   }
 
@@ -1510,15 +1395,11 @@ $('fishClose').addEventListener('click', () => {
   closeFishing();
 });
 
-// 空格键也能停下钓鱼
 document.addEventListener('keydown', e => {
-  if (e.code === 'Space' && fishing) {
-    e.preventDefault();
-    stopFishing();
-  }
+  if (e.code === 'Space' && fishing) { e.preventDefault(); stopFishing(); }
 });
 
-// ---------------- 顶栏按钮 ----------------
+/* ---------------- 顶栏按钮 ---------------- */
 
 $('pauseBtn').addEventListener('click', () => {
   paused = !paused;
@@ -1531,20 +1412,11 @@ $('saveBtn').addEventListener('click', () => {
   else toast('❌ 保存失败');
 });
 
-// ---------------- 自动保存 ----------------
-
-setInterval(() => {
-  if (!paused) saveGame();
-}, 15000);
-
+setInterval(() => { if (!paused) saveGame(); }, 15000);
 window.addEventListener('beforeunload', () => { saveGame(); });
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) saveGame();
-});
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveGame(); });
 
-// ---------------- 初始化 ----------------
-
-let gameStarted = false;
+/* ---------------- 初始化 ---------------- */
 
 function initNewGame() {
   rollMarket();
@@ -1552,19 +1424,17 @@ function initNewGame() {
   buildFarm();
   updateToolButtons();
   refresh();
-  gameStarted = true;
 }
 
 function start() {
   const loaded = loadGame();
 
   if (loaded) {
-    // 补上市场/任务（如果缺失）
     if (!Object.keys(state.market).length) rollMarket();
     if (!state.quests.length) newQuests();
-    // 时间合理化：如果在凌晨，重置到早上
     if (state.time < 6 * 60 || state.time >= 24 * 60) state.time = 6 * 60;
     if (state.water > state.waterMax) state.water = state.waterMax;
+    if (typeof state.baitBought !== 'number') state.baitBought = 0;
   } else {
     rollMarket();
     newQuests();
@@ -1573,14 +1443,14 @@ function start() {
   buildFarm();
   updateToolButtons();
   refresh();
-  gameStarted = true;
 
   if (loaded) {
     toast(`🌾 欢迎回来！第 ${state.day} 天`, 2200);
   } else {
     setTimeout(() => {
       toast('🌾 欢迎来到无尽农场！', 2400);
-      setTimeout(() => toast('先用 🪓 开垦，再 💧 浇水，最后 🌱 播种', 3000), 800);
+      setTimeout(() => toast('先开垦 → 浇水 → 播种（背包已有种子）', 3000), 800);
+      setTimeout(() => toast('成熟后去市场卖钱，再买钓鱼竿', 3000), 1600);
     }, 300);
   }
 
