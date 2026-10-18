@@ -711,6 +711,15 @@ function addXp(skill, amount) {
 }
 
 function rollWeather(season) {
+  // 防连雨机制：如果昨天是暴雨，今天强制多云或晴天
+  if (state.weather === 'storm') {
+    return Math.random() < 0.5 ? 'sunny' : 'cloudy';
+  }
+  // 如果昨天是雨天，今天有一半概率直接放晴
+  if (state.weather === 'rain') {
+    return Math.random() < 0.5 ? 'sunny' : 'cloudy';
+  }
+
   const cfg = SEASONS[season] || SEASONS.spring;
   const table = cfg.weather;
   let r = Math.random();
