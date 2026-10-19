@@ -1,3 +1,5 @@
+![游戏截图](assets/FB_IMG_1792384308702.jpg)
+
 # 🌾 Farm Game
 **[中文](README.md) | English**
 
