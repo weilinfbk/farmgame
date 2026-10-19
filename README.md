@@ -1,4 +1,5 @@
 ---
+![游戏截图](assets/screenshot-farm.png)
 
 🌾 无尽农村Farm Game
 **[中文](README.md) | [English](README.en.md)**
