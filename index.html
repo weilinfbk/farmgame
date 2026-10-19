@@ -1193,7 +1193,7 @@ function renderShop() {
 
   const rows = currentLand / GRID_W;
   if (rows < GRID_H) {
-    const landCost = Math.floor(900 * Math.pow(2.1, rows - 2));
+    const landCost = Math.floor(900 * Math.pow(5.0, rows - 2));
     html += `<div class="item-row"><span class="item-emoji">🗺️</span><div class="item-name">扩展土地<div class="item-sub">当前 ${rows * GRID_W} 格 → ${(rows + 1) * GRID_W} 格</div></div><button class="mini-btn buy" data-act="buyLand" ${state.money >= landCost ? '' : 'disabled'}>${fmt(landCost)}</button></div>`;
   }
 
