@@ -1,5 +1,5 @@
 ![游戏截图](assets/FB_IMG_1792384308702.jpg)
-# 🌾 无尽农村Farm Game
+# 🌾 无尽农村
 
 **[中文](README.md) | [English](README.en.md)**
 
