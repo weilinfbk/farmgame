@@ -1,6 +1,6 @@
 ![游戏截图](assets/FB_IMG_1792384308702.jpg)
 
-# 🌾 Farm Game
+# 🌾 Endless Farm Game
 **[中文](README.md) | English**
 
 A lightweight farming simulation game fully built with AI, featuring a UI based on Google Material 3.
