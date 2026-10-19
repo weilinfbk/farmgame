@@ -996,7 +996,14 @@ function endDay(auto) {
       t.crop.withered = false;
       return;
     }
-
+   
+    // 新增：4% 概率突发疾病枯死（哪怕浇了水也会死）
+  if (Math.random() < 0.04) {
+    t.crop.dead = true;
+    deadCount++;
+    return; // 死掉了就不继续生长了
+  }
+   
     if (t.watered) {
       if (t.crop.withered) t.crop.withered = false;
       t.crop.dryDays = 0;
