@@ -461,7 +461,29 @@
 /* ============================================================
    🌾 无尽农场 — v48（修复：场景切换清理 / 钓鱼平衡 / 咬钩跳过）
    ============================================================ */
-
+// 🌍 语言检测系统：自动识别系统语言
+const isZh = navigator.language.startsWith('zh');
+const LANG = {
+  zh: {
+    day: '第 {n} 天', season: '春季', weatherSunny: '晴天', // ...以及其他天气
+    farm: '🪓 农作', fish: '🎣 钓鱼', pasture: '🐄 牧场',
+    hoe: '🪓 开垦', water: '💧 浇水', seed: '🌱 播种',
+    bag: '🎒 背包', shop: '🏪 商店', market: '💰 市场', quest: '📋 任务',
+    cast: '🎣 抛竿钓鱼', waiting: '等待鱼儿上钩...', bite: '上钩了！点击任意处开始！',
+    pulling: '点击绿色区域！', idle: '准备抛竿', noRod: '需先购买鱼竿', noBait: '没有鱼饵'
+  },
+  en: {
+    day: 'Day {n}', season: 'Spring', weatherSunny: 'Sunny', // ...以及其他天气
+    farm: '🪓 Farm', fish: '🎣 Fish', pasture: '🐄 Pasture',
+    hoe: '🪓 Hoe', water: '💧 Water', seed: '🌱 Seed',
+    bag: '🎒 Bag', shop: '🏪 Shop', market: '💰 Market', quest: '📋 Quest',
+    cast: '🎣 Cast Rod', waiting: 'Waiting for fish...', bite: 'Bite! Tap anywhere!',
+    pulling: 'Tap GREEN ZONE!', idle: 'Ready', noRod: 'Need a Rod', noBait: 'No Bait'
+  }
+};
+// 快速翻译函数
+const t = (key) => isZh ? LANG.zh[key] : LANG.en[key];
+ 
 // ======== 音频控制核心 ========
 let audioCtx = null, isMuted = false;
 const bgm = document.getElementById('bgm');
