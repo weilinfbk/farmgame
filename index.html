@@ -371,9 +371,9 @@
 
   <main>
     <div class="scene-tabs">
-      <button class="scene-tab active" data-scene="crop">🪓 农作</button>
-      <button class="scene-tab" data-scene="fish">🎣 钓鱼</button>
-      <button class="scene-tab" data-scene="pasture">🐄 牧场</button>
+      <button class="scene-tab active" data-scene="crop" id="tabCrop">🪓 农作</button>
+      <button class="scene-tab" data-scene="fish" id="tabFishScene">🎣 钓鱼</button>
+      <button class="scene-tab" data-scene="pasture" id="tabPasture">🐄 牧场</button>
     </div>
 
     <div class="scene-container">
@@ -382,9 +382,9 @@
           <div id="farm"></div>
         </div>
         <div class="bottom-toolbar" id="cropToolbar">
-          <button class="tool-btn active" data-tool="hoe">🪓 开垦</button>
-          <button class="tool-btn" data-tool="water">💧 浇水</button>
-          <button class="tool-btn" data-tool="seed">🌱 播种</button>
+          <button class="tool-btn active" data-tool="hoe" id="toolHoe">🪓 开垦</button>
+          <button class="tool-btn" data-tool="water" id="toolWater">💧 浇水</button>
+          <button class="tool-btn" data-tool="seed" id="toolSeed">🌱 播种</button>
         </div>
       </div>
 
@@ -417,7 +417,7 @@
               <div class="hit-text" id="hitText"></div>
             </div>
             
-            <div class="rhythm-tips">光标进入绿色区域时点击屏幕！</div>
+            <div class="rhythm-tips" id="rhythmTips">光标进入绿色区域时点击屏幕！</div>
           </div>
 
           <div class="fish-action-area">
@@ -431,8 +431,8 @@
       <div id="scene-pasture" class="scene-content">
         <div class="pasture-barn">
           <div style="font-size:48px;">🏡</div>
-          <div style="font-weight:700;">农场牧场</div>
-          <div style="font-size:12px; color:var(--md-on-surface-variant);">请记得每天给动物喂食，否则它们会生病！</div>
+          <div style="font-weight:700;" id="pastureBarnTitle">农场牧场</div>
+          <div style="font-size:12px; color:var(--md-on-surface-variant);" id="pastureBarnSub">请记得每天给动物喂食，否则它们会生病！</div>
         </div>
         <div class="pasture-grid" id="pastureGrid"></div>
       </div>
@@ -441,10 +441,10 @@
     <aside class="panel" id="mainPanel">
       <div class="drag-handle" id="dragHandle"></div>
       <nav class="tabs">
-        <button class="tab active" data-tab="bag">🎒 背包</button>
-        <button class="tab" data-tab="shop">🏪 商店</button>
-        <button class="tab" data-tab="market">💰 市场</button>
-        <button class="tab" data-tab="quest">📋 任务</button>
+        <button class="tab active" data-tab="bag" id="tabBag">🎒 背包</button>
+        <button class="tab" data-tab="shop" id="tabShop">🏪 商店</button>
+        <button class="tab" data-tab="market" id="tabMarket">💰 市场</button>
+        <button class="tab" data-tab="quest" id="tabQuest">📋 任务</button>
       </nav>
       <div id="panelContent"></div>
     </aside>
@@ -459,31 +459,31 @@
 
 <script>
 /* ============================================================
-   🌾 无尽农场 — v48（修复：场景切换清理 / 钓鱼平衡 / 咬钩跳过）
+   🌾 无尽农场 — v48（彻底双语系统）
    ============================================================ */
+
 // 🌍 语言检测系统：自动识别系统语言
 const isZh = navigator.language.startsWith('zh');
 const LANG = {
   zh: {
-    day: '第 {n} 天', season: '春季', weatherSunny: '晴天', // ...以及其他天气
-    farm: '🪓 农作', fish: '🎣 钓鱼', pasture: '🐄 牧场',
+    day: '第 {n} 天', farm: '🪓 农作', fish: '🎣 钓鱼', pasture: '🐄 牧场',
     hoe: '🪓 开垦', water: '💧 浇水', seed: '🌱 播种',
     bag: '🎒 背包', shop: '🏪 商店', market: '💰 市场', quest: '📋 任务',
     cast: '🎣 抛竿钓鱼', waiting: '等待鱼儿上钩...', bite: '上钩了！点击任意处开始！',
-    pulling: '点击绿色区域！', idle: '准备抛竿', noRod: '需先购买鱼竿', noBait: '没有鱼饵'
+    pulling: '点击绿色区域！', idle: '准备抛竿', noRod: '需先购买鱼竿', noBait: '没有鱼饵',
+    reelIn: '收竿', tip: '光标进入绿色区域时点击屏幕！', barnTitle: '农场牧场', barnSub: '请记得每天给动物喂食，否则它们会生病！'
   },
   en: {
-    day: 'Day {n}', season: 'Spring', weatherSunny: 'Sunny', // ...以及其他天气
-    farm: '🪓 Farm', fish: '🎣 Fish', pasture: '🐄 Pasture',
+    day: 'Day {n}', farm: '🪓 Farm', fish: '🎣 Fish', pasture: '🐄 Pasture',
     hoe: '🪓 Hoe', water: '💧 Water', seed: '🌱 Seed',
     bag: '🎒 Bag', shop: '🏪 Shop', market: '💰 Market', quest: '📋 Quest',
     cast: '🎣 Cast Rod', waiting: 'Waiting for fish...', bite: 'Bite! Tap anywhere!',
-    pulling: 'Tap GREEN ZONE!', idle: 'Ready', noRod: 'Need a Rod', noBait: 'No Bait'
+    pulling: 'Tap GREEN ZONE!', idle: 'Ready', noRod: 'Need a Rod', noBait: 'No Bait',
+    reelIn: 'Reel In', tip: 'Tap when the cursor is in the green zone!', barnTitle: 'Farm Pasture', barnSub: 'Remember to feed animals daily, or they will get sick!'
   }
 };
-// 快速翻译函数
 const t = (key) => isZh ? LANG.zh[key] : LANG.en[key];
- 
+
 // ======== 音频控制核心 ========
 let audioCtx = null, isMuted = false;
 const bgm = document.getElementById('bgm');
@@ -599,10 +599,11 @@ const SEASONS = {
   summer: { name:isZh?'夏季':'Summer', emoji:'☀️', witherDays:2, weather:{ sunny:0.35, cloudy:0.10, rain:0.20, storm:0.15, hot:0.20 } },
   autumn: { name:isZh?'秋季':'Autumn', emoji:'🍂', witherDays:1, weather:{ sunny:0.30, cloudy:0.25, wind:0.35, rain:0.10 } },
   winter: { name:isZh?'冬季':'Winter', emoji:'❄️', witherDays:1, weather:{ sunny:0.10, cloudy:0.15, wind:0.15, snow:0.60 } },
-};const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'], DAYS_PER_SEASON = 7;
+};
+const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'], DAYS_PER_SEASON = 7;
 
 const $ = id => document.getElementById(id);
-const fmt = n => Math.floor(n).toLocaleString('zh-CN');
+const fmt = n => Math.floor(n).toLocaleString(isZh ? 'zh-CN' : 'en-US');
 const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
 
@@ -618,12 +619,15 @@ function basePrice(id) {
 }
 
 function itemInfo(id) {
-  if (id === 'bait') return { name:'鱼饵', emoji:'🪱', type:'bait' }; if (id === 'feed') return { name:'基础饲料', emoji:'🌾', type:'feed' };
-  if (id === 'egg') return { name:'鸡蛋', emoji:'🥚', type:'animal_prod' }; if (id === 'milk') return { name:'牛奶', emoji:'🥛', type:'animal_prod' }; if (id === 'wool') return { name:'羊毛', emoji:'🧶', type:'animal_prod' };
-  if (id.startsWith('seed_')) { const c = CROPS[id.slice(5)]; return { name: (c ? c.name : '?') + '种子', emoji: '🌱', type: 'seed', cropId: id.slice(5) }; }
+  if (id === 'bait') return { name:isZh?'鱼饵':'Bait', emoji:'🪱', type:'bait' }; 
+  if (id === 'feed') return { name:isZh?'基础饲料':'Basic Feed', emoji:'🌾', type:'feed' };
+  if (id === 'egg') return { name:isZh?'鸡蛋':'Egg', emoji:'🥚', type:'animal_prod' }; 
+  if (id === 'milk') return { name:isZh?'牛奶':'Milk', emoji:'🥛', type:'animal_prod' }; 
+  if (id === 'wool') return { name:isZh?'羊毛':'Wool', emoji:'🧶', type:'animal_prod' };
+  if (id.startsWith('seed_')) { const c = CROPS[id.slice(5)]; return { name: (c ? c.name : '?') + (isZh ? '种子' : ' Seeds'), emoji: '🌱', type: 'seed', cropId: id.slice(5) }; }
   if (id.startsWith('crop_')) { const c = CROPS[id.slice(5)]; return { name: c ? c.name : '?', emoji: c ? c.emoji : '❓', type: 'crop', cropId: id.slice(5) }; }
   if (id.startsWith('fish_')) { const f = FISH[id.slice(5)]; return { name: f ? f.name : '?', emoji: f ? f.emoji : '🐟', type: 'fish', fishId: id.slice(5) }; }
-  return { name: '未知', emoji: '❓', type: 'other' };
+  return { name: isZh?'未知':'Unknown', emoji: '❓', type: 'other' };
 }
 
 function getRodCost(lvl) {
@@ -660,7 +664,12 @@ function addXp(skill, amount) {
   const s = state.skills[skill]; if (!s) return;
   s.xp += amount; let leveled = false;
   while (s.xp >= xpNeed(s.lvl)) { s.xp -= xpNeed(s.lvl); s.lvl++; leveled = true; }
-  if (leveled) { const names = { farm: '农业', fish: '钓鱼', trade: '商业' }; playSound('success'); toast(`🎉 ${names[skill]}等级提升到 Lv.${s.lvl}！`, 2200); refresh(); }
+  if (leveled) { 
+    const names = { farm: isZh?'农业':'Farming', fish: isZh?'钓鱼':'Fishing', trade: isZh?'商业':'Trading' }; 
+    playSound('success'); 
+    toast(isZh ? `🎉 ${names[skill]}等级提升到 Lv.${s.lvl}！` : `🎉 ${names[skill]} level up to Lv.${s.lvl}!`, 2200); 
+    refresh(); 
+  }
 }
 
 function rollWeather(season) {
@@ -706,7 +715,8 @@ function renderTop() {
   const season = getSeason(state.day);
   const sc = SEASONS[season];
   if (state.day !== lastDay) {
-    lastDay = state.day; $('dayEl').textContent = `第 ${state.day} 天`;
+    lastDay = state.day; 
+    $('dayEl').textContent = isZh ? `第 ${state.day} 天` : `Day ${state.day}`;
     $('seasonIco').textContent = sc.emoji; $('seasonEl').textContent = sc.name;
   }
   const h = Math.floor(state.time / 60) % 24, m = Math.floor(state.time % 60);
@@ -718,44 +728,41 @@ function renderTop() {
   $('moneyEl').textContent = fmt(state.money);
   $('waterEl').textContent = `${state.water}/${state.waterMax}`;
 
-if (state.weather !== lastWeather) {
-  lastWeather = state.weather; 
-  const w = WEATHER[state.weather] || WEATHER.sunny;
-  $('weatherEl').textContent = w.name; 
-  $('weatherIco').textContent = w.emoji;
-  
-  // ✅ 修复：给 body 加上天气 class，让动态配色和雪花样式生效
-  const isFish = document.body.classList.contains('in-fish-scene');
-  document.body.className = `weather-${state.weather}` + (isFish ? ' in-fish-scene' : '');
+  if (state.weather !== lastWeather) {
+    lastWeather = state.weather; 
+    const w = WEATHER[state.weather] || WEATHER.sunny;
+    $('weatherEl').textContent = w.name; 
+    $('weatherIco').textContent = w.emoji;
+    
+    const isFish = document.body.classList.contains('in-fish-scene');
+    document.body.className = `weather-${state.weather}` + (isFish ? ' in-fish-scene' : '');
 
-  if (typeof updateWeatherAudio === 'function') updateWeatherAudio();
-  
-  const particleBox = document.getElementById('weather-particles');
-  const wName = state.weather;
-  particleBox.innerHTML = ''; // 每次天气变化先清空旧的粒子
-  
-  if (wName === 'rain' || wName === 'storm' || wName === 'snow') {
-    const count = wName === 'storm' ? 40 : (wName === 'rain' ? 25 : 35); 
-    for (let i = 0; i < count; i++) { 
-      const p = document.createElement('div'); 
-      p.className = 'particle'; 
-      p.style.left = Math.random() * 100 + 'vw'; 
-      
-      if (wName === 'snow') {
-        // ❄️ 雪花专属：随机大小，飘落速度更慢更轻柔
-        p.style.width = (Math.random() * 6 + 3) + 'px';
-        p.style.height = p.style.width;
-        p.style.animationDuration = (Math.random() * 4 + 4) + 's'; 
-        p.style.animationDelay = (Math.random() * 3) + 's';
-      } else {
-        // 🌧️ 雨滴专属：速度快，大小固定
-        p.style.animationDuration = (Math.random() * 1.5 + 0.8) + 's'; 
-        p.style.animationDelay = Math.random() * 2 + 's'; 
+    if (typeof updateWeatherAudio === 'function') updateWeatherAudio();
+    
+    const particleBox = document.getElementById('weather-particles');
+    const wName = state.weather;
+    particleBox.innerHTML = ''; 
+    
+    if (wName === 'rain' || wName === 'storm' || wName === 'snow') {
+      const count = wName === 'storm' ? 40 : (wName === 'rain' ? 25 : 35); 
+      for (let i = 0; i < count; i++) { 
+        const p = document.createElement('div'); 
+        p.className = 'particle'; 
+        p.style.left = Math.random() * 100 + 'vw'; 
+        
+        if (wName === 'snow') {
+          p.style.width = (Math.random() * 6 + 3) + 'px';
+          p.style.height = p.style.width;
+          p.style.animationDuration = (Math.random() * 4 + 4) + 's'; 
+          p.style.animationDelay = (Math.random() * 3) + 's';
+        } else {
+          p.style.animationDuration = (Math.random() * 1.5 + 0.8) + 's'; 
+          p.style.animationDelay = Math.random() * 2 + 's'; 
+        }
+        particleBox.appendChild(p); 
       }
-      particleBox.appendChild(p); 
     }
   }
-}
 }
 
 const farmEl = $('farm'); let tileEls = []; 
@@ -801,32 +808,32 @@ function updateFarm() {
 function onTileClick(i) {
   const t = state.tiles[i];
   if (t.crop && t.crop.dead) {
-    if (state.selectedTool === 'hoe') { t.crop = null; t.tilled = true; t.watered = false; playSound('hoe'); toast('🧹 铲除了枯死的作物', 1500); updateFarm(); refresh(); saveGame(); } 
-    else { toast('💀 作物已枯死，请用 🪓 开垦铲除'); } return;
+    if (state.selectedTool === 'hoe') { t.crop = null; t.tilled = true; t.watered = false; playSound('hoe'); toast(isZh ? '🧹 铲除了枯死的作物' : '🧹 Removed dead crop', 1500); updateFarm(); refresh(); saveGame(); } 
+    else { toast(isZh ? '💀 作物已枯死，请用 🪓 开垦铲除' : '💀 Crop is dead, use 🪓 Hoe to remove'); } return;
   }
   if (t.crop && t.crop.withered) {
-    if (state.selectedTool !== 'water') { toast('🥀 作物枯萎了，用 💧 浇水可以救活'); return; }
-    if (t.watered) { toast('今天已经浇过水了'); return; }
-    if (state.water <= 0) { toast('💧 水壶空了！'); return; }
+    if (state.selectedTool !== 'water') { toast(isZh ? '🥀 作物枯萎了，用 💧 浇水可以救活' : '🥀 Crop withered, use 💧 Water to revive'); return; }
+    if (t.watered) { toast(isZh ? '今天已经浇过水了' : 'Already watered today'); return; }
+    if (state.water <= 0) { toast(isZh ? '💧 水壶空了！' : '💧 Watering can is empty!'); return; }
     state.water--; t.watered = true; t.crop.withered = false; t.crop.dryDays = 0;
-    playSound('water'); toast('🌱 作物恢复了生机！', 1600); updateFarm(); renderTop(); saveGame(); return;
+    playSound('water'); toast(isZh ? '🌱 作物恢复了生机！' : '🌱 Crop revived!', 1600); updateFarm(); renderTop(); saveGame(); return;
   }
   if (t.crop && t.crop.growth >= CROPS[t.crop.id].days) { playSound('plant'); harvest(i); return; }
   const tool = state.selectedTool;
   if (tool === 'hoe') {
-    if (t.crop) { toast('这里有作物在生长'); return; }
-    if (t.tilled) { toast('已经开垦过了'); return; }
+    if (t.crop) { toast(isZh ? '这里有作物在生长' : 'Crop is growing here'); return; }
+    if (t.tilled) { toast(isZh ? '已经开垦过了' : 'Already tilled'); return; }
     t.tilled = true; t.watered = false; playSound('hoe'); addXp('farm', 2); updateFarm();
   } else if (tool === 'water') {
-    if (!t.tilled) { toast('先用锄头开垦这块地'); return; }
-    if (t.watered) { toast('已经浇过水了'); return; }
-    if (state.water <= 0) { toast('💧 水壶空了！'); return; }
+    if (!t.tilled) { toast(isZh ? '先用锄头开垦这块地' : 'Till the land first'); return; }
+    if (t.watered) { toast(isZh ? '已经浇过水了' : 'Already watered'); return; }
+    if (state.water <= 0) { toast(isZh ? '💧 水壶空了！' : '💧 Watering can is empty!'); return; }
     state.water--; t.watered = true; playSound('water'); addXp('farm', 1); updateFarm(); renderTop();
   } else if (tool === 'seed') {
-    if (!state.selectedSeed) { toast('请先在背包里选择一种种子'); return; }
-    if (!t.tilled) { toast('先用锄头开垦这块地'); return; }
-    if (t.crop) { toast('这块地已经有作物了'); return; }
-    const sid = state.selectedSeed; if (!state.inv[sid]) { toast('种子不足'); state.selectedSeed = null; refresh(); return; }
+    if (!state.selectedSeed) { toast(isZh ? '请先在背包里选择一种种子' : 'Select a seed from bag first'); return; }
+    if (!t.tilled) { toast(isZh ? '先用锄头开垦这块地' : 'Till the land first'); return; }
+    if (t.crop) { toast(isZh ? '这块地已经有作物了' : 'This plot already has a crop'); return; }
+    const sid = state.selectedSeed; if (!state.inv[sid]) { toast(isZh ? '种子不足' : 'Not enough seeds'); state.selectedSeed = null; refresh(); return; }
     const cropId = sid.slice(5); removeItem(sid, 1); t.crop = { id: cropId, growth: 0, dryDays: 0, withered: false, dead: false };
     state.stats.planted++; playSound('plant'); if (!state.inv[sid]) state.selectedSeed = null; updateFarm(); refresh();
   }
@@ -834,11 +841,11 @@ function onTileClick(i) {
 
 function harvest(i) {
   const t = state.tiles[i]; if (!t.crop || t.crop.withered || t.crop.dead) return;
-  const c = CROPS[t.crop.id]; if (t.crop.growth < c.days) { toast('还没成熟呢'); return; }
+  const c = CROPS[t.crop.id]; if (t.crop.growth < c.days) { toast(isZh ? '还没成熟呢' : 'Not ready to harvest'); return; }
   let qty = 1; const lvl = state.skills.farm.lvl;
   if (Math.random() < 0.03 * lvl) qty++; if (Math.random() < 0.012 * lvl) qty++;
   addItem('crop_' + t.crop.id, qty); addXp('farm', c.xp); state.stats.harvest += qty; addQuestProgress('harvest', qty);
-  t.crop = null; t.tilled = true; t.watered = false; toast(`${c.emoji} 收获 ${c.name} ×${qty}`, 1400); updateFarm(); refresh(); saveGame();
+  t.crop = null; t.tilled = true; t.watered = false; toast(isZh ? `${c.emoji} 收获 ${c.name} ×${qty}` : `${c.emoji} Harvested ${c.name} ×${qty}`, 1400); updateFarm(); refresh(); saveGame();
 }
 
 let paused = false, lastTick = performance.now(), timeAccum = 0;
@@ -880,14 +887,14 @@ function endDay(auto) {
   });
   state.day++; state.stats.days++; state.time = 6 * 60; state.water = state.waterMax; state.baitBought = 0;
   const oldSeason = season, newSeason = getSeason(state.day);
-  if (oldSeason !== newSeason) setTimeout(() => toast(`${SEASONS[newSeason].emoji} 进入${SEASONS[newSeason].name}！`, 2600), 800);
+  if (oldSeason !== newSeason) setTimeout(() => toast(isZh ? `${SEASONS[newSeason].emoji} 进入${SEASONS[newSeason].name}！` : `${SEASONS[newSeason].emoji} Entering ${SEASONS[newSeason].name}!`, 2600), 800);
   state.weather = rollWeather(newSeason); const w = WEATHER[state.weather];
   state.tiles.forEach(t => { t.watered = false; }); if (w.waters) state.tiles.forEach(t => { if (t.tilled) t.watered = true; });
   rollMarket(); newQuests();
-  if (deadCount > 0) setTimeout(() => toast(`💀 昨夜有 ${deadCount} 棵作物突发疾病枯死了！`, 3000), 1000);
-  if (deathCount > 0) setTimeout(() => toast(`💀 有 ${deathCount} 只动物因为没有食物饿死了！`, 3500), 1200);
-  else if (sickCount > 0) setTimeout(() => toast(`🏥 有 ${sickCount} 只动物生病了，再不喂食会死亡！`, 3500), 1200);
-  else if (producedItems.length > 0) setTimeout(() => toast(`🐄 牧场产出了：${producedItems.slice(0, 3).join('、')}`, 2500), 1200);
+  if (deadCount > 0) setTimeout(() => toast(isZh ? `💀 昨夜有 ${deadCount} 棵作物突发疾病枯死了！` : `💀 ${deadCount} crops died of disease overnight!`, 3000), 1000);
+  if (deathCount > 0) setTimeout(() => toast(isZh ? `💀 有 ${deathCount} 只动物因为没有食物饿死了！` : `💀 ${deathCount} animals starved to death!`, 3500), 1200);
+  else if (sickCount > 0) setTimeout(() => toast(isZh ? `🏥 有 ${sickCount} 只动物生病了，再不喂食会死亡！` : `🏥 ${sickCount} animals are sick, feed them soon!`, 3500), 1200);
+  else if (producedItems.length > 0) setTimeout(() => toast(isZh ? `🐄 牧场产出了：${producedItems.slice(0, 3).join('、')}` : `🐄 Pasture produced: ${producedItems.slice(0, 3).join(', ')}`, 2500), 1200);
   
   updateFarm(); renderTop(); refresh(); saveGame(); 
 
@@ -895,7 +902,7 @@ function endDay(auto) {
     const inFishScene = document.body.classList.contains('in-fish-scene');
     if (inFishScene || fishState !== 'idle') {
       const sc = SEASONS[getSeason(state.day)];
-      toast(`☀️ 第 ${state.day} 天 · ${sc.emoji}${sc.name} · ${w.emoji}${w.name}`, 3000);
+      toast(isZh ? `☀️ 第 ${state.day} 天 · ${sc.emoji}${sc.name} · ${w.emoji}${w.name}` : `☀️ Day ${state.day} · ${sc.emoji}${sc.name} · ${w.emoji}${w.name}`, 3000);
     } else {
       showDayOverlay();
     }
@@ -905,7 +912,11 @@ function endDay(auto) {
 function showDayOverlay() {
   const w = WEATHER[state.weather], season = getSeason(state.day), sc = SEASONS[season];
   const ov = document.createElement('div'); ov.className = 'day-overlay';
-  ov.innerHTML = `<div class="big-emoji">${w.emoji}</div><div class="big-text">第 ${state.day} 天</div><div class="sub">${sc.emoji} ${sc.name} · ${w.name}${w.waters ? ' · 作物自动浇水' : ''}</div>`;
+  const overlayText = isZh ? `第 ${state.day} 天` : `Day ${state.day}`;
+  const subText = isZh 
+    ? `${sc.emoji} ${sc.name} · ${w.name}${w.waters ? ' · 作物自动浇水' : ''}`
+    : `${sc.emoji} ${sc.name} · ${w.name}${w.waters ? ' · Auto-watered' : ''}`;
+  ov.innerHTML = `<div class="big-emoji">${w.emoji}</div><div class="big-text">${overlayText}</div><div class="sub">${subText}</div>`;
   document.body.appendChild(ov);
   setTimeout(() => { ov.style.transition = 'opacity .5s'; ov.style.opacity = '0'; setTimeout(() => ov.remove(), 520); }, 3000);
 }
@@ -920,24 +931,26 @@ function renderPanel() {
       case 'bag': panelContent.innerHTML = renderBag(); break; case 'shop': panelContent.innerHTML = renderShop(); break;
       case 'market': panelContent.innerHTML = renderMarket(); break; case 'quest': panelContent.innerHTML = renderQuestPanel(); break;
     }
-  } catch (e) { panelContent.innerHTML = `<div class="empty" style="color:var(--md-error); font-weight:bold;">渲染出错：${e.message}</div>`; }
+  } catch (e) { panelContent.innerHTML = `<div class="empty" style="color:var(--md-error); font-weight:bold;">${isZh?'渲染出错：':'Render Error: '}${e.message}</div>`; }
 }
 
 function renderBag() {
   const entries = Object.entries(state.inv).filter(([k, v]) => v > 0);
-  if (!entries.length) return '<div class="empty">背包空空如也<br>去 🏪 商店买些种子开始吧</div>';
+  if (!entries.length) return `<div class="empty">${isZh ? '背包空空如也<br>去 🏪 商店买些种子开始吧' : 'Bag is empty<br>Go to 🏪 Shop to buy seeds'}</div>`;
   const order = { seed: 0, crop: 1, fish: 2, animal_prod: 3, bait: 4, feed: 5, other: 6 };
   entries.sort((a, b) => (order[itemInfo(a[0]).type] - order[itemInfo(b[0]).type]) || itemInfo(a[0]).name.localeCompare(itemInfo(b[0]).name));
   let html = '';
   entries.forEach(([id, n]) => {
     const info = itemInfo(id); const selected = state.selectedSeed === id; let btn = '';
-    if (info.type === 'seed') btn = `<button class="mini-btn" data-act="selectSeed" data-id="${id}" style="${selected ? 'background:var(--md-secondary);color:#000;' : ''}">${selected ? '✓已选' : '选择'}</button>`;
-    else if (info.type === 'bait' || info.type === 'feed') btn = `<span class="item-sub">消耗品</span>`;
-    else btn = `<button class="mini-btn" data-act="sellOne" data-id="${id}" style="background:#f5c542; color:#000;">卖 ${fmt(sellPriceOf(id))}</button>`;
+    if (info.type === 'seed') btn = `<button class="mini-btn" data-act="selectSeed" data-id="${id}" style="${selected ? 'background:var(--md-secondary);color:#000;' : ''}">${selected ? (isZh?'✓已选':'✓Selected') : (isZh?'选择':'Select')}</button>`;
+    else if (info.type === 'bait' || info.type === 'feed') btn = `<span class="item-sub">${isZh?'消耗品':'Consumable'}</span>`;
+    else btn = `<button class="mini-btn" data-act="sellOne" data-id="${id}" style="background:#f5c542; color:#000;">${isZh?'卖':'Sell'} ${fmt(sellPriceOf(id))}</button>`;
     html += `<div class="item-row"><span class="item-emoji">${info.emoji}</span><div class="item-name">${info.name}</div><span class="item-count">×${n}</span>${btn}</div>`;
   });
-  html += `<div class="sec-title">📊 技能</div>`;
-  html += skillRow('🌾 农业', state.skills.farm, '解锁作物 · 双倍收获'); html += skillRow('🎣 钓鱼', state.skills.fish, '更大判定区 · 稀有鱼'); html += skillRow('💼 商业', state.skills.trade, '售价加成');
+  html += `<div class="sec-title">📊 ${isZh?'技能':'Skills'}</div>`;
+  html += skillRow(isZh?'🌾 农业':'🌾 Farming', state.skills.farm, isZh?'解锁作物 · 双倍收获':'Unlock crops · Double harvest'); 
+  html += skillRow(isZh?'🎣 钓鱼':'🎣 Fishing', state.skills.fish, isZh?'更大判定区 · 稀有鱼':'Bigger zone · Rare fish'); 
+  html += skillRow(isZh?'💼 商业':'💼 Trading', state.skills.trade, isZh?'售价加成':'Price bonus');
   return html;
 }
 
@@ -948,50 +961,50 @@ function skillRow(name, s, desc) {
 
 function renderShop() {
   const fl = state.skills.farm.lvl, season = getSeason(state.day), sc = SEASONS[season];
-  let html = `<div class="item-row" style="background:var(--md-surface-container-high);"><span class="item-emoji">${sc.emoji}</span><div class="item-name">${sc.name}<div class="item-sub">${sc.witherDays === 1 ? '一天不浇水就会枯萎' : '连续两天不浇水才会枯萎'}</div></div></div>`;
-  html += '<div class="sec-title">🌱 种子</div>';
+  let html = `<div class="item-row" style="background:var(--md-surface-container-high);"><span class="item-emoji">${sc.emoji}</span><div class="item-name">${sc.name}<div class="item-sub">${sc.witherDays === 1 ? (isZh?'一天不浇水就会枯萎':'Withers in 1 day without water') : (isZh?'连续两天不浇水才会枯萎':'Withers in 2 days without water')}</div></div></div>`;
+  html += `<div class="sec-title">🌱 ${isZh?'种子':'Seeds'}</div>`;
   Object.entries(CROPS).forEach(([id, c]) => {
     const locked = fl < c.lv, price = c.seed, canBuy = state.money >= price && !locked;
-    html += `<div class="item-row ${locked ? 'locked-row' : ''}"><span class="item-emoji">${locked ? '🔒' : c.emoji}</span><div class="item-name">${c.name}种子<div class="item-sub">${locked ? `需要农业 Lv.${c.lv}` : `${c.days}天成熟 · 售 ${fmt(c.sell)}`}</div></div><button class="mini-btn ${canBuy ? '' : 'locked'}" data-act="buySeed" data-id="${id}" data-n="1">${fmt(price)}</button></div>`;
+    html += `<div class="item-row ${locked ? 'locked-row' : ''}"><span class="item-emoji">${locked ? '🔒' : c.emoji}</span><div class="item-name">${c.name} ${isZh?'种子':'Seeds'}<div class="item-sub">${locked ? (isZh?`需要农业 Lv.${c.lv}`:`Req. Farming Lv.${c.lv}`) : (isZh?`${c.days}天成熟 · 售 ${fmt(c.sell)}`:`${c.days} days · Sell ${fmt(c.sell)}`)}</div></div><button class="mini-btn ${canBuy ? '' : 'locked'}" data-act="buySeed" data-id="${id}" data-n="1">${fmt(price)}</button></div>`;
   });
-  html += '<div class="sec-title">🛠️ 工具升级</div>';
+  html += `<div class="sec-title">🛠️ ${isZh?'工具升级':'Tool Upgrades'}</div>`;
   const currentLand = state.landSize * state.landSize;
-  if (state.canLvl >= MAX_WATER_LVL) { html += `<div class="item-row"><span class="item-emoji">💧</span><div class="item-name">水壶 Lv.${state.canLvl} (满级)<div class="item-sub">容量 ${state.waterMax}</div></div></div>`; } 
+  if (state.canLvl >= MAX_WATER_LVL) { html += `<div class="item-row"><span class="item-emoji">💧</span><div class="item-name">${isZh?'水壶':'Watering Can'} Lv.${state.canLvl} (${isZh?'满级':'Max'})<div class="item-sub">${isZh?'容量':'Cap'} ${state.waterMax}</div></div></div>`; } 
   else {
     const canCost = Math.floor(180 * Math.pow(1.6, state.canLvl - 1)), requiredLand = Math.min(64, (state.canLvl + 1) * 8);
     const isLandEnough = currentLand >= requiredLand, canBuy = state.money >= canCost && isLandEnough;
-    let subText = `容量 ${state.waterMax} → ${state.waterMax + WATER_PER_UP}`; if (!isLandEnough) subText = `需扩展土地至 ${requiredLand} 格`;
-    html += `<div class="item-row"><span class="item-emoji">💧</span><div class="item-name">水壶 Lv.${state.canLvl}<div class="item-sub">${subText}</div></div><button class="mini-btn ${canBuy ? '' : 'locked'}" data-act="upCan">${fmt(canCost)}</button></div>`;
+    let subText = `${isZh?'容量':'Cap'} ${state.waterMax} → ${state.waterMax + WATER_PER_UP}`; if (!isLandEnough) subText = isZh?`需扩展土地至 ${requiredLand} 格`:`Req. Land size ${requiredLand}`;
+    html += `<div class="item-row"><span class="item-emoji">💧</span><div class="item-name">${isZh?'水壶':'Watering Can'} Lv.${state.canLvl}<div class="item-sub">${subText}</div></div><button class="mini-btn ${canBuy ? '' : 'locked'}" data-act="upCan">${fmt(canCost)}</button></div>`;
   }
   if (state.landSize < 8) {
     const landCost = Math.floor(1000 * Math.pow(2.2, state.landSize - 4)), nextSize = state.landSize + 1;
     const canBuyLand = state.money >= landCost;
-    html += `<div class="item-row"><span class="item-emoji">🗺️</span><div class="item-name">扩展土地<div class="item-sub">当前 ${state.landSize}x${state.landSize} → ${nextSize}x${nextSize} (${nextSize * nextSize}格)</div></div><button class="mini-btn ${canBuyLand ? '' : 'locked'}" data-act="buyLand">${fmt(landCost)}</button></div>`;
-  } else { html += `<div class="item-row"><span class="item-emoji">🗺️</span><div class="item-name">土地已全部开垦 (8x8)</div></div>`; }
+    html += `<div class="item-row"><span class="item-emoji">🗺️</span><div class="item-name">${isZh?'扩展土地':'Expand Land'}<div class="item-sub">${isZh?'当前':'Current'} ${state.landSize}x${state.landSize} → ${nextSize}x${nextSize}</div></div><button class="mini-btn ${canBuyLand ? '' : 'locked'}" data-act="buyLand">${fmt(landCost)}</button></div>`;
+  } else { html += `<div class="item-row"><span class="item-emoji">🗺️</span><div class="item-name">${isZh?'土地已全部开垦 (8x8)':'Land fully expanded (8x8)'}</div></div>`; }
   
-  html += '<div class="sec-title">🎣 钓鱼用品</div>';
+  html += `<div class="sec-title">🎣 ${isZh?'钓鱼用品':'Fishing Gear'}</div>`;
   if (state.rodLvl === 0) { 
     const canBuyRod = state.money >= ROD_PRICE;
-    html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">钓鱼竿<div class="item-sub">购买后才能开始钓鱼</div></div><button class="mini-btn ${canBuyRod ? '' : 'locked'}" data-act="buyRod">${fmt(ROD_PRICE)}</button></div>`; 
+    html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">${isZh?'钓鱼竿':'Fishing Rod'}<div class="item-sub">${isZh?'购买后才能开始钓鱼':'Buy to start fishing'}</div></div><button class="mini-btn ${canBuyRod ? '' : 'locked'}" data-act="buyRod">${fmt(ROD_PRICE)}</button></div>`; 
   } 
-  else if (state.rodLvl >= MAX_ROD_LVL) { html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">鱼竿 Lv.${state.rodLvl} (满级)<div class="item-sub">判定区最大 · 0.05% 概率钓到 3 星以上稀有鱼</div></div></div>`; } 
+  else if (state.rodLvl >= MAX_ROD_LVL) { html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">${isZh?'鱼竿':'Rod'} Lv.${state.rodLvl} (${isZh?'满级':'Max'})<div class="item-sub">${isZh?'判定区最大 · 0.05% 概率钓到 3 星以上稀有鱼':'Max zone · 0.05% rare fish chance'}</div></div></div>`; } 
   else { 
     const rodCost = getRodCost(state.rodLvl); 
     const canBuyRod = state.money >= rodCost;
-    html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">鱼竿 Lv.${state.rodLvl}<div class="item-sub">升级可扩大判定区与提升稀有鱼概率</div></div><button class="mini-btn ${canBuyRod ? '' : 'locked'}" data-act="upRod">${fmt(rodCost)}</button></div>`; 
+    html += `<div class="item-row"><span class="item-emoji">🎣</span><div class="item-name">${isZh?'鱼竿':'Rod'} Lv.${state.rodLvl}<div class="item-sub">${isZh?'升级可扩大判定区与提升稀有鱼概率':'Upgrade for bigger zone & rare fish'}</div></div><button class="mini-btn ${canBuyRod ? '' : 'locked'}" data-act="upRod">${fmt(rodCost)}</button></div>`; 
   }
   const remain = BAIT_LIMIT - (state.baitBought || 0);
   const canBuyBait = remain > 0 && state.money >= BAIT_PRICE;
-  html += `<div class="item-row"><span class="item-emoji">🪱</span><div class="item-name">鱼饵<div class="item-sub">今日剩余 ${remain}/${BAIT_LIMIT} 个</div></div><button class="mini-btn ${canBuyBait ? '' : 'locked'}" data-act="buyBait" data-n="1">${fmt(BAIT_PRICE)}</button></div>`;
+  html += `<div class="item-row"><span class="item-emoji">🪱</span><div class="item-name">${isZh?'鱼饵':'Bait'}<div class="item-sub">${isZh?'今日剩余':'Remaining today'} ${remain}/${BAIT_LIMIT}</div></div><button class="mini-btn ${canBuyBait ? '' : 'locked'}" data-act="buyBait" data-n="1">${fmt(BAIT_PRICE)}</button></div>`;
   
-  html += '<div class="sec-title">🐄 动物与饲料</div>';
+  html += `<div class="sec-title">🐄 ${isZh?'动物与饲料':'Animals & Feed'}</div>`;
   const feedOwned = state.inv['feed'] || 0;
   const canBuyFeed = state.money >= 500;
-  html += `<div class="item-row"><span class="item-emoji">🌾</span><div class="item-name">基础饲料<div class="item-sub">饱食度+1 (背包有 ${feedOwned})</div></div><button class="mini-btn ${canBuyFeed ? '' : 'locked'}" data-act="buyFeed" data-n="10">10个(500G)</button></div>`;
+  html += `<div class="item-row"><span class="item-emoji">🌾</span><div class="item-name">${isZh?'基础饲料':'Basic Feed'}<div class="item-sub">${isZh?`饱食度+1 (背包有 ${feedOwned})`:`Feed +1 (Owned ${feedOwned})`}</div></div><button class="mini-btn ${canBuyFeed ? '' : 'locked'}" data-act="buyFeed" data-n="10">${isZh?'10个(500G)':'10x (500G)'}</button></div>`;
   Object.entries(ANIMALS).forEach(([id, a]) => {
     const owned = state.animals.filter(x => x.type === id).length;
     const canBuyAnimal = state.money >= a.price;
-    html += `<div class="item-row"><span class="item-emoji">${a.emoji}</span><div class="item-name">${a.name} (拥有 ${owned})<div class="item-sub">产出：${a.prodEmoji} ${a.prodName} (售 ${fmt(a.prodPrice)})</div></div><button class="mini-btn ${canBuyAnimal ? '' : 'locked'}" data-act="buyAnimal" data-id="${id}">${fmt(a.price)}</button></div>`;
+    html += `<div class="item-row"><span class="item-emoji">${a.emoji}</span><div class="item-name">${a.name} (${isZh?'拥有':'Owned'} ${owned})<div class="item-sub">${isZh?'产出':'Produces'}: ${a.prodEmoji} ${a.prodName} (${isZh?'售':'Sell'} ${fmt(a.prodPrice)})</div></div><button class="mini-btn ${canBuyAnimal ? '' : 'locked'}" data-act="buyAnimal" data-id="${id}">${fmt(a.price)}</button></div>`;
   });
   return html;
 }
@@ -1001,45 +1014,45 @@ function renderMarket() {
   Object.keys(CROPS).forEach(id => { if (state.inv['crop_' + id]) sellable.push('crop_' + id); }); Object.keys(FISH).forEach(id => { if (state.inv['fish_' + id]) sellable.push('fish_' + id); }); ['egg', 'milk', 'wool'].forEach(id => { if (state.inv[id]) sellable.push(id); });
   let html = '';
   if (state.demand.length) {
-    const names = state.demand.map(id => CROPS[id.slice(5)] ? `${CROPS[id.slice(5)].emoji}${CROPS[id.slice(5)].name}` : '?').join('、');
-    html += `<div class="item-row" style="background: rgba(255,223,154,0.15); box-shadow: inset 0 0 0 1px var(--md-primary);"><span class="item-emoji">🔥</span><div class="item-name" style="color:var(--md-primary);">今日热门（3倍价格）<div class="item-sub">${names}</div></div></div>`;
+    const names = state.demand.map(id => CROPS[id.slice(5)] ? `${CROPS[id.slice(5)].emoji}${CROPS[id.slice(5)].name}` : '?').join(', ');
+    html += `<div class="item-row" style="background: rgba(255,223,154,0.15); box-shadow: inset 0 0 0 1px var(--md-primary);"><span class="item-emoji">🔥</span><div class="item-name" style="color:var(--md-primary);">${isZh?'今日热门（3倍价格）':'Hot Today (3x Price)'}<div class="item-sub">${names}</div></div></div>`;
   }
-  if (!sellable.length) { html += '<div class="empty">背包里没有可以卖的东西<br>去收获作物或者钓鱼吧 🎣</div>'; } 
+  if (!sellable.length) { html += `<div class="empty">${isZh?'背包里没有可以卖的东西<br>去收获作物或者钓鱼吧 🎣':'Nothing to sell in bag<br>Go harvest or fish 🎣'}</div>`; } 
   else {
-    html += '<div class="sec-title">💰 可出售</div>';
+    html += `<div class="sec-title">💰 ${isZh?'可出售':'Sellable'}</div>`;
     sellable.sort((a, b) => sellPriceOf(b) * (state.inv[b] || 0) - sellPriceOf(a) * (state.inv[a] || 0));
     sellable.forEach(id => {
       const info = itemInfo(id), n = state.inv[id], price = sellPriceOf(id), isHot = state.demand.includes(id);
-      html += `<div class="item-row"><span class="item-emoji">${info.emoji}</span><div class="item-name">${info.name}${isHot ? ' 🔥' : ''}<div class="item-sub">单价 ${fmt(price)} G</div></div><span class="item-count">×${n}</span><button class="mini-btn" data-act="sellOne" data-id="${id}">卖1</button><button class="mini-btn" data-act="sellAll" data-id="${id}">全卖</button></div>`;
+      html += `<div class="item-row"><span class="item-emoji">${info.emoji}</span><div class="item-name">${info.name}${isHot ? ' 🔥' : ''}<div class="item-sub">${isZh?'单价':'Price'} ${fmt(price)} G</div></div><span class="item-count">×${n}</span><button class="mini-btn" data-act="sellOne" data-id="${id}">${isZh?'卖1':'Sell 1'}</button><button class="mini-btn" data-act="sellAll" data-id="${id}">${isZh?'全卖':'Sell All'}</button></div>`;
     });
-    html += `<button class="big-btn" data-act="sellEverything" style="margin-top:16px; background:#f5c542; color:#000;">💰 一键全部出售（${fmt(sellable.reduce((s, id) => s + sellPriceOf(id) * state.inv[id], 0))} G）</button>`;
+    html += `<button class="big-btn" data-act="sellEverything" style="margin-top:16px; background:#f5c542; color:#000;">💰 ${isZh?'一键全部出售':'Sell Everything'} (${fmt(sellable.reduce((s, id) => s + sellPriceOf(id) * state.inv[id], 0))} G)</button>`;
   }
   return html;
 }
 
 function getQuestDesc(q) {
-  if (q.id === 'harvest') return `收获 ${q.target} 个作物`;
-  if (q.id === 'fish') return `钓到 ${q.target} 条鱼`;
-  if (q.id === 'earn') return `通过卖东西赚取 ${fmt(q.target)} 金币`;
-  return '未知任务';
+  if (q.id === 'harvest') return isZh ? `收获 ${q.target} 个作物` : `Harvest ${q.target} crops`;
+  if (q.id === 'fish') return isZh ? `钓到 ${q.target} 条鱼` : `Catch ${q.target} fish`;
+  if (q.id === 'earn') return isZh ? `赚取 ${fmt(q.target)} 金币` : `Earn ${fmt(q.target)} Gold`;
+  return isZh ? '未知任务' : 'Unknown Quest';
 }
 
 function renderQuestPanel() {
-  let html = `<button class="big-btn" data-act="toggleStats" style="background:var(--md-surface-container-high); color:var(--md-on-surface); margin-bottom:20px;">📊 ${showStats ? '收起统计记录' : '查看统计记录'}</button>`;
+  let html = `<button class="big-btn" data-act="toggleStats" style="background:var(--md-surface-container-high); color:var(--md-on-surface); margin-bottom:20px;">📊 ${showStats ? (isZh?'收起统计记录':'Hide Stats') : (isZh?'查看统计记录':'View Stats')}</button>`;
   if (showStats) {
-    html += `<div class="item-row"><span class="item-emoji">🌾</span><div class="item-name">累计收获</div><span class="item-count">${fmt(state.stats.harvest)}</span></div>
-      <div class="item-row"><span class="item-emoji">🐟</span><div class="item-name">累计钓鱼</div><span class="item-count">${fmt(state.stats.fish)}</span></div>
-      <div class="item-row"><span class="item-emoji">💵</span><div class="item-name">累计赚取</div><span class="item-count">${fmt(state.stats.earned)}</span></div>
-      <div class="item-row"><span class="item-emoji">💀</span><div class="item-name">作物病死</div><span class="item-count">${fmt(state.stats.dead || 0)}</span></div>
-      <div class="item-row"><span class="item-emoji">📅</span><div class="item-name">经营天数</div><span class="item-count">${fmt(state.day)}</span></div>
+    html += `<div class="item-row"><span class="item-emoji">🌾</span><div class="item-name">${isZh?'累计收获':'Total Harvested'}</div><span class="item-count">${fmt(state.stats.harvest)}</span></div>
+      <div class="item-row"><span class="item-emoji">🐟</span><div class="item-name">${isZh?'累计钓鱼':'Total Fish'}</div><span class="item-count">${fmt(state.stats.fish)}</span></div>
+      <div class="item-row"><span class="item-emoji">💵</span><div class="item-name">${isZh?'累计赚取':'Total Earned'}</div><span class="item-count">${fmt(state.stats.earned)}</span></div>
+      <div class="item-row"><span class="item-emoji">💀</span><div class="item-name">${isZh?'作物病死':'Crops Died'}</div><span class="item-count">${fmt(state.stats.dead || 0)}</span></div>
+      <div class="item-row"><span class="item-emoji">📅</span><div class="item-name">${isZh?'经营天数':'Days Played'}</div><span class="item-count">${fmt(state.day)}</span></div>
       <div style="height:20px;"></div>`;
   }
-  html += '<div class="sec-title">📋 每日任务</div>';
+  html += `<div class="sec-title">📋 ${isZh?'每日任务':'Daily Quests'}</div>`;
   state.quests.forEach((q, idx) => {
     const done = q.progress >= q.target, pct = Math.min(100, (q.progress / q.target) * 100);
-    html += `<div class="quest-row ${done ? 'done' : ''}"><div class="quest-head"><span>${getQuestDesc(q)}</span><span class="quest-reward">+${fmt(q.reward)} G</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><span class="item-sub">${fmt(q.progress)} / ${fmt(q.target)}</span>${done ? `<button class="mini-btn" data-act="claimQuest" data-id="${idx}">领取奖励</button>` : `<span class="item-sub">进行中</span>`}</div></div>`;
+    html += `<div class="quest-row ${done ? 'done' : ''}"><div class="quest-head"><span>${getQuestDesc(q)}</span><span class="quest-reward">+${fmt(q.reward)} G</span></div><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><span class="item-sub">${fmt(q.progress)} / ${fmt(q.target)}</span>${done ? `<button class="mini-btn" data-act="claimQuest" data-id="${idx}">${isZh?'领取奖励':'Claim'}</button>` : `<span class="item-sub">${isZh?'进行中':'In Progress'}</span>`}</div></div>`;
   });
-  html += `<div class="sec-title">🔧 存档管理</div><div style="display:flex; flex-direction:column; gap:10px;"><button class="mini-btn" style="padding:14px; background:var(--md-surface-container-high); color:var(--md-on-surface);" data-act="exportSave">📤 导出存档码</button><button class="mini-btn" style="padding:14px; background:var(--md-surface-container-high); color:var(--md-on-surface);" data-act="importSave">📥 导入存档码</button><button class="mini-btn" style="padding:14px; background:#ffb4ab; color:#690005;" data-act="resetSave">🗑️ 删除存档并重开</button></div>`;
+  html += `<div class="sec-title">🔧 ${isZh?'存档管理':'Save Management'}</div><div style="display:flex; flex-direction:column; gap:10px;"><button class="mini-btn" style="padding:14px; background:var(--md-surface-container-high); color:var(--md-on-surface);" data-act="exportSave">📤 ${isZh?'导出存档码':'Export Save'}</button><button class="mini-btn" style="padding:14px; background:var(--md-surface-container-high); color:var(--md-on-surface);" data-act="importSave">📥 ${isZh?'导入存档码':'Import Save'}</button><button class="mini-btn" style="padding:14px; background:#ffb4ab; color:#690005;" data-act="resetSave">🗑️ ${isZh?'删除存档并重开':'Delete & Restart'}</button></div>`;
   return html;
 }
 
@@ -1057,84 +1070,84 @@ panelContent.addEventListener('click', e => {
       const n = state.inv[itemId]; if (!n) return;
       const price = sellPriceOf(itemId); total += price * n; state.money += price * n; state.stats.earned += price * n; delete state.inv[itemId];
     });
-    if (total > 0) { addXp('trade', Math.max(1, Math.floor(total / 50))); addQuestProgress('earn', total); playSound('sell'); toast(`💰 全部出售，获得 ${fmt(total)} G`, 2000); refresh(); saveGame(); }
+    if (total > 0) { addXp('trade', Math.max(1, Math.floor(total / 50))); addQuestProgress('earn', total); playSound('sell'); toast(isZh ? `💰 全部出售，获得 ${fmt(total)} G` : `💰 Sold everything for ${fmt(total)} G`, 2000); refresh(); saveGame(); }
   }
   else if (act === 'buySeed') buySeed(id, parseInt(btn.dataset.n) || 1);
   else if (act === 'buyRod') { 
-    if (state.money < ROD_PRICE) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < ROD_PRICE) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= ROD_PRICE; 
     state.rodLvl = 1; 
     playSound('success'); 
-    toast('🎣 购买了钓鱼竿！', 2200); 
+    toast(isZh?'🎣 购买了钓鱼竿！':'🎣 Bought Fishing Rod!', 2200); 
     refresh(); saveGame(); 
   }
   else if (act === 'buyBait') { 
     let n = parseInt(btn.dataset.n) || 1; 
     const remain = BAIT_LIMIT - (state.baitBought || 0); 
     n = Math.min(n, remain); 
-    if (n <= 0) { toast('今日购买鱼饵已达上限'); return; } 
+    if (n <= 0) { toast(isZh?'今日购买鱼饵已达上限':'Daily bait limit reached'); return; } 
     const cost = BAIT_PRICE * n; 
-    if (state.money < cost) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < cost) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= cost; 
     state.baitBought = (state.baitBought || 0) + n; 
     addItem('bait', n); 
     playSound('success'); 
-    toast(`🪱 购买了 鱼饵 ×${n}`, 1500); 
+    toast(isZh?`🪱 购买了 鱼饵 ×${n}`:`🪱 Bought Bait ×${n}`, 1500); 
     refresh(); saveGame(); 
   }
   else if (act === 'buyFeed') { 
     const n = parseInt(btn.dataset.n) || 1; 
     const cost = n * 50; 
-    if (state.money < cost) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < cost) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= cost; 
     addItem('feed', n); 
     playSound('success'); 
-    toast(`🌾 购买了 基础饲料 ×${n}`, 1500); 
+    toast(isZh?`🌾 购买了 基础饲料 ×${n}`:`🌾 Bought Basic Feed ×${n}`, 1500); 
     refresh(); saveGame(); 
   }
   else if (act === 'buyAnimal') { 
     const a = ANIMALS[id]; 
-    if (state.money < a.price) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < a.price) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= a.price; 
     state.animals.push({ id: Date.now() + Math.random(), type: id, status: 'healthy', hungryDays: 0, fedToday: false }); 
     playSound('success'); 
-    toast(`🏡 购买了一只 ${a.name}`, 1500); 
+    toast(isZh?`🏡 购买了一只 ${a.name}`:`🏡 Bought a ${a.name}`, 1500); 
     refresh(); saveGame(); renderPasture(); 
   }
   else if (act === 'upCan') { 
     if (state.canLvl >= MAX_WATER_LVL) return; 
     const currentLand = state.landSize * state.landSize; 
     const requiredLand = Math.min(64, (state.canLvl + 1) * 8); 
-    if (currentLand < requiredLand) { toast(`请先扩展土地至 ${requiredLand} 格`); return; } 
+    if (currentLand < requiredLand) { toast(isZh?`请先扩展土地至 ${requiredLand} 格`:`Please expand land to ${requiredLand} tiles first`); return; } 
     const cost = Math.floor(180 * Math.pow(1.6, state.canLvl - 1)); 
-    if (state.money < cost) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < cost) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= cost; 
     state.canLvl++; 
     state.waterMax += WATER_PER_UP; 
     state.water = state.waterMax; 
     playSound('success'); 
-    toast(`💧 水壶升级至 Lv.${state.canLvl}，容量提升`, 2000); 
+    toast(isZh?`💧 水壶升级至 Lv.${state.canLvl}，容量提升`:`💧 Watering Can upgraded to Lv.${state.canLvl}, capacity increased`, 2000); 
     refresh(); saveGame(); 
   }
   else if (act === 'upRod') { 
     if (state.rodLvl >= MAX_ROD_LVL) return; 
     const cost = getRodCost(state.rodLvl); 
-    if (state.money < cost) { playSound('error'); toast('💰 金币不够'); return; } 
+    if (state.money < cost) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
     state.money -= cost; 
     state.rodLvl++; 
     playSound('success'); 
-    toast(`🎣 鱼竿升级至 Lv.${state.rodLvl}！`, 2000); 
+    toast(isZh?`🎣 鱼竿升级至 Lv.${state.rodLvl}！`:`🎣 Rod upgraded to Lv.${state.rodLvl}!`, 2000); 
     refresh(); saveGame(); 
   }
   else if (act === 'buyLand') { 
     if (state.landSize >= 8) return;
     const cost = Math.floor(1000 * Math.pow(2.2, state.landSize - 4));
-    if (state.money < cost) { playSound('error'); toast('💰 金币不够'); return; }
+    if (state.money < cost) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; }
     state.money -= cost; 
     state.landSize++; 
     buildFarm(); 
     playSound('hoe'); 
-    toast(`🗺️ 农场扩展到 ${state.landSize}x${state.landSize}！`, 2000); 
+    toast(isZh?`🗺️ 农场扩展到 ${state.landSize}x${state.landSize}！`:`🗺️ Farm expanded to ${state.landSize}x${state.landSize}!`, 2000); 
     refresh(); saveGame(); 
   }
   else if (act === 'claimQuest') { 
@@ -1144,24 +1157,39 @@ panelContent.addEventListener('click', e => {
     state.stats.earned += q.reward; 
     q.target = -1; 
     playSound('success'); 
-    toast(`📋 领取任务奖励 +${fmt(q.reward)} G`, 2000); 
+    toast(isZh?`📋 领取任务奖励 +${fmt(q.reward)} G`:`📋 Claimed quest reward +${fmt(q.reward)} G`, 2000); 
     state.quests = state.quests.filter(x => x.target !== -1); 
     refresh(); saveGame(); 
   }
-  else if (act === 'exportSave') prompt('复制存档码：', btoa(unescape(encodeURIComponent(JSON.stringify({ v: SAVE_VER, state })))));
-  else if (act === 'importSave') { const code = prompt('粘贴存档码：'); if (!code) return; try { const data = JSON.parse(decodeURIComponent(escape(atob(code.trim())))); const s = migrateSave(data); if (!s) throw new Error(); state = s; resetUICache(); buildFarm(); refresh(); saveGame(); toast('✅ 存档导入成功'); } catch (err) { playSound('error'); toast('❌ 存档码无效'); } }
-  else if (act === 'resetSave') { if (confirm('确定删除存档并重开吗？')) { localStorage.removeItem(SAVE_KEY); state = defaultState(); resetUICache(); initNewGame(); toast('新的农场生活开始了！'); } }
+  else if (act === 'exportSave') prompt(isZh?'复制存档码：':'Copy Save Code:', btoa(unescape(encodeURIComponent(JSON.stringify({ v: SAVE_VER, state })))));
+  else if (act === 'importSave') { 
+    const code = prompt(isZh?'粘贴存档码：':'Paste Save Code:'); 
+    if (!code) return; 
+    try { 
+      const data = JSON.parse(decodeURIComponent(escape(atob(code.trim())))); 
+      const s = migrateSave(data); 
+      if (!s) throw new Error(); 
+      state = s; resetUICache(); buildFarm(); refresh(); saveGame(); 
+      toast(isZh?'✅ 存档导入成功':'✅ Save imported successfully'); 
+    } catch (err) { playSound('error'); toast(isZh?'❌ 存档码无效':'❌ Invalid save code'); } 
+  }
+  else if (act === 'resetSave') { 
+    if (confirm(isZh?'确定删除存档并重开吗？':'Are you sure you want to delete the save and restart?')) { 
+      localStorage.removeItem(SAVE_KEY); state = defaultState(); resetUICache(); initNewGame(); 
+      toast(isZh?'新的农场生活开始了！':'A new farm life begins!'); 
+    } 
+  }
 });
 
 function buySeed(cropId, n) { 
   const c = CROPS[cropId]; 
-  if (state.skills.farm.lvl < c.lv) { playSound('error'); toast(`🔒 需要农业 Lv.${c.lv} 解锁`); return; } 
+  if (state.skills.farm.lvl < c.lv) { playSound('error'); toast(isZh?`🔒 需要农业 Lv.${c.lv} 解锁`:`🔒 Req. Farming Lv.${c.lv}`); return; } 
   const total = c.seed * n; 
-  if (state.money < total) { playSound('error'); toast('💰 金币不够'); return; } 
+  if (state.money < total) { playSound('error'); toast(isZh?'💰 金币不够':'💰 Not enough money'); return; } 
   state.money -= total; 
   addItem('seed_' + cropId, n); 
   playSound('success'); 
-  toast(`🌱 购买了 ${c.name}种子 ×${n}`, 1500); 
+  toast(isZh?`🌱 购买了 ${c.name}种子 ×${n}`:`🌱 Bought ${c.name} Seeds ×${n}`, 1500); 
   refresh(); saveGame(); 
 }
 
@@ -1176,7 +1204,7 @@ function sellItem(id, n) {
   addXp('trade', Math.max(1, Math.floor(total / 50))); 
   addQuestProgress('earn', total); 
   playSound('sell'); 
-  toast(`💰 卖出 ${itemInfo(id).name} ×${n}，+${fmt(total)} G`); 
+  toast(isZh?`💰 卖出 ${itemInfo(id).name} ×${n}，+${fmt(total)} G`:`💰 Sold ${itemInfo(id).name} ×${n}, +${fmt(total)} G`); 
   refresh(); saveGame(); 
 }
 
@@ -1198,7 +1226,6 @@ document.querySelectorAll('.scene-tab').forEach(tab => {
       document.body.classList.remove('in-fish-scene');
     }
 
-    // ✨ 修复 #1：离开钓鱼场景时清理所有钓鱼状态，避免鱼饵被吞
     if (scene !== 'fish' && fishState !== 'idle') {
       const wasActive = (fishState === 'pulling' || fishState === 'biting' || fishState === 'waiting');
       if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
@@ -1209,8 +1236,8 @@ document.querySelectorAll('.scene-tab').forEach(tab => {
       rhythmZone.classList.remove('active');
       castRodBtn.style.display = 'block';
       castRodBtn.disabled = false;
-      fishStatusText.textContent = '准备抛竿';
-      if (wasActive) toast('💨 离开钓鱼场', 1200);
+      fishStatusText.textContent = t('idle');
+      if (wasActive) toast(isZh?'💨 离开钓鱼场':'💨 Left fishing area', 1200);
     }
 
     if (scene === 'pasture') renderPasture();
@@ -1274,7 +1301,7 @@ dragHandle.addEventListener('touchend', (e) => {
 
 
 // ============================================================
-// 钓鱼系统（v48 重平衡）
+// 钓鱼系统
 // ============================================================
 let currentFish = null;
 let fishState = 'idle'; 
@@ -1282,13 +1309,12 @@ let fishTimer = null;
 let rhythmFrameId = null;
 let pullingStartTime = 0;
 
-// ✨ 修复 #2：重平衡核心参数
-const FISH_TENSION_START = 60;   // 起点张力（原来是 30，太紧）
-const FISH_TENSION_HIT   = 32;   // 命中一次 +32（原来是 +15）
-const FISH_TENSION_MISS  = 12;   // Miss 一次 -12（原来是 -20，太狠）
-const FISH_TENSION_DECAY = 0.04; // 每帧自然衰减（原来是 0.15，太快）
-const FISH_BITING_DELAY  = 400;  // ✨ 修复 #5：等待上钩的动画时间（原来 800ms）
-const PULLING_GRACE_MS   = 150;  // 进入扯线后 150ms 冷却，防连点误触
+const FISH_TENSION_START = 60;   
+const FISH_TENSION_HIT   = 32;   
+const FISH_TENSION_MISS  = 12;   
+const FISH_TENSION_DECAY = 0.04; 
+const FISH_BITING_DELAY  = 400;  
+const PULLING_GRACE_MS   = 150;  
 
 let rhythmState = {
   cursorX: 0, speed: 1, dir: 1, zoneStart: 35, zoneWidth: 30, tension: FISH_TENSION_START
@@ -1317,7 +1343,7 @@ function updateFishUI() {
     rhythmContainer.classList.remove('active');
     rhythmZone.classList.remove('active');
     castRodBtn.style.display = 'block';
-    castRodBtn.textContent = isZh ? '收竿' : 'Reel In'; // 👈 这里做了中英切换
+    castRodBtn.textContent = t('reelIn');
     castRodBtn.disabled = false;
   } else if (fishState === 'biting') {
     fishStatusText.textContent = t('bite');
@@ -1335,6 +1361,7 @@ function updateFishUI() {
     startRhythmLoop();
   }
 }
+
 castRodBtn.addEventListener('click', () => {
   if (fishState === 'idle') {
     if (state.rodLvl === 0 || (state.inv['bait'] || 0) <= 0) return;
@@ -1360,14 +1387,12 @@ function startFishBite() {
   playSound('success');
   if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
-  // ✨ 修复 #5：biting 阶段缩短 + 可点击跳过
   fishTimer = setTimeout(() => {
     if (fishState !== 'biting') return;
     beginPulling();
   }, FISH_BITING_DELAY);
 }
 
-// ✨ 修复 #2：独立出来，可被「点击跳过」直接调用
 function beginPulling() {
   if (!currentFish || fishState !== 'biting') return;
   if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
@@ -1375,7 +1400,6 @@ function beginPulling() {
   const diff = currentFish.diff;
   const rodLvl = state.rodLvl || 1;
 
-  // 重平衡公式：新手能钓，高难度需要技术
   rhythmState.speed = Math.max(0.5, 0.35 + diff * 0.55 - rodLvl * 0.04);
   rhythmState.zoneWidth = Math.max(10, Math.min(45, 38 - diff * 14 + rodLvl * 1.2));
   rhythmState.zoneStart = rand(10, 90 - rhythmState.zoneWidth);
@@ -1392,7 +1416,6 @@ rhythmZone.addEventListener('pointerdown', (e) => {
   if (fishState !== 'pulling') return;
   e.preventDefault();
 
-  // ✨ 冷却保护：进入 pulling 150ms 内的点击不算（防连点跳过误触）
   if (performance.now() - pullingStartTime < PULLING_GRACE_MS) return;
   
   const zoneEnd = rhythmState.zoneStart + rhythmState.zoneWidth;
@@ -1404,7 +1427,6 @@ rhythmZone.addEventListener('pointerdown', (e) => {
     showHitText('NICE!', '#00ff80');
     if (navigator.vibrate) navigator.vibrate(20);
 
-    // ✨ 命中：绿区只移动位置，不缩小（原来是随机缩/放，手感差）
     rhythmState.zoneStart = rand(5, 95 - rhythmState.zoneWidth);
   } else {
     rhythmState.tension = Math.max(0, rhythmState.tension - FISH_TENSION_MISS);
@@ -1412,7 +1434,6 @@ rhythmZone.addEventListener('pointerdown', (e) => {
     showHitText('MISS', '#ffb4ab');
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 
-    // ✨ Miss：绿区缩小 + 移动
     rhythmState.zoneWidth = Math.max(10, rhythmState.zoneWidth - 2);
     rhythmState.zoneStart = rand(5, 95 - rhythmState.zoneWidth);
   }
@@ -1433,7 +1454,6 @@ rhythmZone.addEventListener('pointerdown', (e) => {
   }
 });
 
-// ✨ 修复 #5：点击 fish-panel 任意位置跳过 biting 等待
 document.querySelector('.fish-panel').addEventListener('pointerdown', (e) => {
   if (fishState === 'biting') {
     e.preventDefault();
@@ -1466,7 +1486,6 @@ function startRhythmLoop() {
       rhythmState.dir = 1;
     }
     
-    // ✨ 修复 #2：自然衰减放缓
     rhythmState.tension -= FISH_TENSION_DECAY;
     if (rhythmState.tension <= 0) {
       rhythmState.tension = 0;
@@ -1491,8 +1510,8 @@ function updateRhythmUI() {
   else if (rhythmState.tension > 30) tensionBarFill.style.background = '#f5c542'; 
   else tensionBarFill.style.background = 'var(--md-error)';
 }
+
 function successFishing() {
-  // ✅ 第一步：先把鱼存下来
   const caught = currentFish; 
   
   if (rhythmFrameId) { cancelAnimationFrame(rhythmFrameId); rhythmFrameId = null; }
@@ -1501,33 +1520,37 @@ function successFishing() {
   fishState = 'idle';
   currentFish = null;
   castRodBtn.style.display = 'none';
-rhythmZone.classList.remove('active');
-setTimeout(() => {
-  updateFishUI();
-}, 1500);
+  rhythmZone.classList.remove('active');
+  
+  setTimeout(() => { updateFishUI(); }, 1500);
+  
   playSound('fish_success');
   if (navigator.vibrate) navigator.vibrate(200);
 
-  // 如果出于某种奇怪的原因没有鱼，直接返回
   if (!caught) return; 
 
-  // ✅ 第二步：用存下来的 caught 发奖励
   addItem('fish_' + caught.id, 1);
   addXp('fish', caught.xp);
   state.stats.fish++;
   addQuestProgress('fish', 1);
-  toast(`🎉 钓到了 ${caught.emoji} ${caught.name}（${'★'.repeat(caught.rarity)}）！`, 2500);
+  toast(isZh ? `🎉 钓到了 ${caught.emoji} ${caught.name}（${'★'.repeat(caught.rarity)}）！` : `🎉 Caught ${caught.emoji} ${caught.name} (${'★'.repeat(caught.rarity)})!`, 2500);
   refresh();
   saveGame();
 }
+
 function failFishing() {
   if (rhythmFrameId) { cancelAnimationFrame(rhythmFrameId); rhythmFrameId = null; }
   if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
+  
   fishState = 'idle';
   currentFish = null;
-  updateFishUI();
+  
+  castRodBtn.style.display = 'none';
+  rhythmZone.classList.remove('active');
+  setTimeout(() => { updateFishUI(); }, 1500);
+
   playSound('fish_fail');
-  toast('💨 鱼线断了，鱼跑了...', 2000);
+  toast(isZh ? '💨 鱼线断了，鱼跑了...' : '💨 Line broke, fish escaped...', 2000);
 }
 
 function pickFish() {
@@ -1572,20 +1595,20 @@ function pickFish() {
 function renderPasture() {
   const grid = $('pastureGrid');
   if (state.animals.length === 0) {
-    grid.innerHTML = `<div class="empty" style="grid-column: 1 / -1; text-align:center;">还没有动物，去商店买一只吧！</div>`;
+    grid.innerHTML = `<div class="empty" style="grid-column: 1 / -1; text-align:center;">${isZh ? '还没有动物，去商店买一只吧！' : 'No animals yet. Go buy one in the shop!'}</div>`;
     return;
   }
   let html = '';
   state.animals.forEach((animal, index) => {
     const a = ANIMALS[animal.type]; 
-    let statusText = '健康', statusClass = 'status-good', btnHtml = '';
-    if (animal.status === 'hungry') { statusText = '饥饿'; statusClass = 'status-bad'; }
-    if (animal.status === 'sick') { statusText = '生病'; statusClass = 'status-bad'; }
-    if (animal.fedToday) { statusText = '已饱食'; statusClass = 'status-good'; btnHtml = `<div style="font-size:12px; opacity:0.6;">等待明天产出</div>`; }
+    let statusText = isZh?'健康':'Healthy', statusClass = 'status-good', btnHtml = '';
+    if (animal.status === 'hungry') { statusText = isZh?'饥饿':'Hungry'; statusClass = 'status-bad'; }
+    if (animal.status === 'sick') { statusText = isZh?'生病':'Sick'; statusClass = 'status-bad'; }
+    if (animal.fedToday) { statusText = isZh?'已饱食':'Fed'; statusClass = 'status-good'; btnHtml = `<div style="font-size:12px; opacity:0.6;">${isZh?'等待明天产出':'Produces tomorrow'}</div>`; }
     
     if (!animal.fedToday) {
       let options = '';
-      if ((state.inv['feed'] || 0) > 0) options += `<button class="feed-btn" data-act="feedAnimal" data-animal="${animal.id}" data-item="feed">🌾 饲料</button>`;
+      if ((state.inv['feed'] || 0) > 0) options += `<button class="feed-btn" data-act="feedAnimal" data-animal="${animal.id}" data-item="feed">🌾 ${isZh?'饲料':'Feed'}</button>`;
       for (const itemId of Object.keys(state.inv)) {
         if (itemId.startsWith('crop_') && state.inv[itemId] > 0) {
           const c = CROPS[itemId.slice(5)];
@@ -1593,15 +1616,9 @@ function renderPasture() {
         }
       }
       if (options) btnHtml = `<div style="display:flex; gap:4px; flex-wrap:wrap; justify-content:center; margin-top:8px;">${options}</div>`;
-      else btnHtml = `<div style="font-size:12px; color:var(--md-error); margin-top:8px;">没有食物</div>`;
+      else btnHtml = `<div style="font-size:12px; color:var(--md-error); margin-top:8px;">${isZh?'没有食物':'No Food'}</div>`;
     }
-
-    html += `<div class="animal-card ${animal.status === 'sick' ? 'sick' : ''}">
-      <div class="animal-emoji">${a.emoji}</div>
-      <div class="animal-name">${a.name}</div>
-      <div class="animal-status ${statusClass}">${statusText}</div>
-      ${btnHtml}
-    </div>`;
+    html += `<div class="animal-card ${animal.status === 'sick' ? 'sick' : ''}"><div class="animal-emoji">${a.emoji}</div><div class="animal-name">${a.name}</div><div class="animal-status ${statusClass}">${statusText}</div>${btnHtml}</div>`;
   });
   grid.innerHTML = html;
 }
@@ -1616,53 +1633,59 @@ $('pastureGrid').addEventListener('click', e => {
     removeItem(itemId, 1);
     animal.fedToday = true; animal.hungryDays = 0; animal.status = 'healthy';
     playSound('plant');
-    toast(`${ANIMALS[animal.type].emoji} 吃掉了食物，明天产出！`, 2000);
+    toast(isZh ? `${ANIMALS[animal.type].emoji} 吃掉了食物，明天产出！` : `${ANIMALS[animal.type].emoji} ate food, produces tomorrow!`, 2000);
     refresh(); saveGame(); renderPasture();
   }
 });
 
 $('pauseBtn').addEventListener('click', () => { paused = !paused; $('pauseBtn').textContent = paused ? '▶️' : '⏸'; });
-$('saveBtn').addEventListener('click', () => { if (saveGame()) toast('💾 游戏已保存', 1200); });
+$('saveBtn').addEventListener('click', () => { if (saveGame()) toast(isZh ? '💾 游戏已保存' : '💾 Game Saved', 1200); });
 setInterval(() => { if (!paused) saveGame(); }, 15000);
 
-function initNewGame() { rollMarket(); newQuests(); state.weather = rollWeather(getSeason(state.day)); buildFarm(); updateToolButtons(); refresh(); }
 function applyLanguage() {
   document.title = isZh ? '🌾 无尽农场' : '🌾 Endless Farm';
+  $('dayEl').textContent = isZh ? '第 1 天' : 'Day 1';
   
-  // 顶部场景 Tab
-  const sceneCrop = document.querySelector('[data-scene="crop"]');
-  if(sceneCrop) sceneCrop.innerHTML = t('farm');
-  const sceneFish = document.querySelector('[data-scene="fish"]');
-  if(sceneFish) sceneFish.innerHTML = t('fish');
-  const scenePasture = document.querySelector('[data-scene="pasture"]');
-  if(scenePasture) scenePasture.innerHTML = t('pasture');
+  // Top Scene Tabs
+  if($('tabCrop')) $('tabCrop').innerHTML = t('farm');
+  if($('tabFishScene')) $('tabFishScene').innerHTML = t('fish');
+  if($('tabPasture')) $('tabPasture').innerHTML = t('pasture');
 
-  // 工具栏
-  const toolHoe = document.querySelector('[data-tool="hoe"]');
-  if(toolHoe) toolHoe.innerHTML = t('hoe');
-  const toolWater = document.querySelector('[data-tool="water"]');
-  if(toolWater) toolWater.innerHTML = t('water');
-  const toolSeed = document.querySelector('[data-tool="seed"]');
-  if(toolSeed) toolSeed.innerHTML = t('seed');
+  // Toolbar
+  if($('toolHoe')) $('toolHoe').innerHTML = t('hoe');
+  if($('toolWater')) $('toolWater').innerHTML = t('water');
+  if($('toolSeed')) $('toolSeed').innerHTML = t('seed');
 
-  // 面板底部的 Tab
-  const tabBag = document.querySelector('[data-tab="bag"]');
-  if(tabBag) tabBag.innerHTML = t('bag');
-  const tabShop = document.querySelector('[data-tab="shop"]');
-  if(tabShop) tabShop.innerHTML = t('shop');
-  const tabMarket = document.querySelector('[data-tab="market"]');
-  if(tabMarket) tabMarket.innerHTML = t('market');
-  const tabQuest = document.querySelector('[data-tab="quest"]');
-  if(tabQuest) tabQuest.innerHTML = t('quest');
+  // Bottom Tabs
+  if($('tabBag')) $('tabBag').innerHTML = t('bag');
+  if($('tabShop')) $('tabShop').innerHTML = t('shop');
+  if($('tabMarket')) $('tabMarket').innerHTML = t('market');
+  if($('tabQuest')) $('tabQuest').innerHTML = t('quest');
+
+  // Fish Panel
+  if($('rhythmTips')) $('rhythmTips').innerHTML = t('tip');
+
+  // Pasture Barn
+  if($('pastureBarnTitle')) $('pastureBarnTitle').innerHTML = t('barnTitle');
+  if($('pastureBarnSub')) $('pastureBarnSub').innerHTML = t('barnSub');
 }
+
+function initNewGame() { 
+  rollMarket(); newQuests(); state.weather = rollWeather(getSeason(state.day)); buildFarm(); updateToolButtons(); refresh(); 
+}
+
 function start() {
+  applyLanguage(); // 👈 初始化双语文字
+
   const loaded = loadGame();
   if (loaded) {
     if (!Object.keys(state.market).length) rollMarket();
     if (!state.quests.length) newQuests();
     if (state.time < 6 * 60 || state.time >= 24 * 60) state.time = 6 * 60;
     state.waterMax = START_WATER + (state.canLvl - 1) * WATER_PER_UP; if (state.water > state.waterMax) state.water = state.waterMax;
-  } else { rollMarket(); newQuests(); state.weather = rollWeather(getSeason(state.day)); }
+  } else { 
+    rollMarket(); newQuests(); state.weather = rollWeather(getSeason(state.day)); 
+  }
   buildFarm(); updateToolButtons(); refresh();
   requestAnimationFrame(tick);
 }
