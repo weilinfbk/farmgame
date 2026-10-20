@@ -1306,24 +1306,24 @@ const trackWrapper = $('trackWrapper');
 
 function updateFishUI() {
   if (fishState === 'idle') {
-    fishStatusText.textContent = '准备抛竿';
+    fishStatusText.textContent = t('idle');
     rhythmContainer.classList.remove('active');
     rhythmZone.classList.remove('active');
     castRodBtn.style.display = 'block';
-    castRodBtn.textContent = state.rodLvl === 0 ? '需先购买鱼竿' : ((state.inv['bait'] || 0) <= 0 ? '没有鱼饵' : '🎣 抛竿钓鱼');
+    castRodBtn.textContent = state.rodLvl === 0 ? t('noRod') : ((state.inv['bait'] || 0) <= 0 ? t('noBait') : t('cast'));
     castRodBtn.disabled = (state.rodLvl === 0 || (state.inv['bait'] || 0) <= 0);
   } else if (fishState === 'waiting') {
-    fishStatusText.textContent = '等待鱼儿上钩...';
+    fishStatusText.textContent = t('waiting');
     rhythmContainer.classList.remove('active');
     rhythmZone.classList.remove('active');
     castRodBtn.style.display = 'block';
-    castRodBtn.textContent = '收竿';
+    castRodBtn.textContent = isZh ? '收竿' : 'Reel In'; // 👈 这里做了中英切换
     castRodBtn.disabled = false;
   } else if (fishState === 'biting') {
-    fishStatusText.textContent = '上钩了！点击任意处开始！';
+    fishStatusText.textContent = t('bite');
     castRodBtn.style.display = 'none';
   } else if (fishState === 'pulling') {
-    fishStatusText.textContent = '点击绿色区域！';
+    fishStatusText.textContent = t('pulling');
     rhythmContainer.classList.add('active');
     rhythmZone.classList.add('active');
     castRodBtn.style.display = 'none';
@@ -1335,7 +1335,6 @@ function updateFishUI() {
     startRhythmLoop();
   }
 }
-
 castRodBtn.addEventListener('click', () => {
   if (fishState === 'idle') {
     if (state.rodLvl === 0 || (state.inv['bait'] || 0) <= 0) return;
@@ -1350,7 +1349,7 @@ castRodBtn.addEventListener('click', () => {
     if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
     fishState = 'idle';
     updateFishUI();
-    toast('收竿了');
+    toast(isZh ? '收竿了' : 'Reeled in');
   }
 });
 
