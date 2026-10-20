@@ -1445,8 +1445,8 @@ function updateRhythmUI() {
   else if (rhythmState.tension > 30) tensionBarFill.style.background = '#f5c542'; 
   else tensionBarFill.style.background = 'var(--md-error)';
 }
-
 function successFishing() {
+  const caught = currentFish;          // ✅ 先保存
   if (rhythmFrameId) { cancelAnimationFrame(rhythmFrameId); rhythmFrameId = null; }
   if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
   fishState = 'idle';
@@ -1454,6 +1454,16 @@ function successFishing() {
   updateFishUI();
   playSound('fish_success');
   if (navigator.vibrate) navigator.vibrate(200);
+
+  if (!caught) return;                 // 兜底保护
+  addItem('fish_' + caught.id, 1);
+  addXp('fish', caught.xp);
+  state.stats.fish++;
+  addQuestProgress('fish', 1);
+  toast(`🎉 钓到了 ${caught.emoji} ${caught.name}（${'★'.repeat(caught.rarity)}）！`, 2500);
+  refresh();
+  saveGame();
+}
 
   const f = currentFish || { id: 'crucian', name: '鲫鱼', emoji: '🐟', rarity: 1, xp: 8 };
   // 保护：如果 currentFish 因为某种原因被清空，用兜底数据
