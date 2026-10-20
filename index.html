@@ -1627,7 +1627,35 @@ $('saveBtn').addEventListener('click', () => { if (saveGame()) toast('💾 游�
 setInterval(() => { if (!paused) saveGame(); }, 15000);
 
 function initNewGame() { rollMarket(); newQuests(); state.weather = rollWeather(getSeason(state.day)); buildFarm(); updateToolButtons(); refresh(); }
+function applyLanguage() {
+  document.title = isZh ? '🌾 无尽农场' : '🌾 Endless Farm';
+  
+  // 顶部场景 Tab
+  const sceneCrop = document.querySelector('[data-scene="crop"]');
+  if(sceneCrop) sceneCrop.innerHTML = t('farm');
+  const sceneFish = document.querySelector('[data-scene="fish"]');
+  if(sceneFish) sceneFish.innerHTML = t('fish');
+  const scenePasture = document.querySelector('[data-scene="pasture"]');
+  if(scenePasture) scenePasture.innerHTML = t('pasture');
 
+  // 工具栏
+  const toolHoe = document.querySelector('[data-tool="hoe"]');
+  if(toolHoe) toolHoe.innerHTML = t('hoe');
+  const toolWater = document.querySelector('[data-tool="water"]');
+  if(toolWater) toolWater.innerHTML = t('water');
+  const toolSeed = document.querySelector('[data-tool="seed"]');
+  if(toolSeed) toolSeed.innerHTML = t('seed');
+
+  // 面板底部的 Tab
+  const tabBag = document.querySelector('[data-tab="bag"]');
+  if(tabBag) tabBag.innerHTML = t('bag');
+  const tabShop = document.querySelector('[data-tab="shop"]');
+  if(tabShop) tabShop.innerHTML = t('shop');
+  const tabMarket = document.querySelector('[data-tab="market"]');
+  if(tabMarket) tabMarket.innerHTML = t('market');
+  const tabQuest = document.querySelector('[data-tab="quest"]');
+  if(tabQuest) tabQuest.innerHTML = t('quest');
+}
 function start() {
   const loaded = loadGame();
   if (loaded) {
