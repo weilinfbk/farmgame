@@ -1454,7 +1454,11 @@ function successFishing() {
   
   fishState = 'idle';
   currentFish = null;
+  castRodBtn.style.display = 'none';
+rhythmZone.classList.remove('active');
+setTimeout(() => {
   updateFishUI();
+}, 1500);
   playSound('fish_success');
   if (navigator.vibrate) navigator.vibrate(200);
 
