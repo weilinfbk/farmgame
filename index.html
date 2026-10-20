@@ -697,18 +697,44 @@ function renderTop() {
   $('moneyEl').textContent = fmt(state.money);
   $('waterEl').textContent = `${state.water}/${state.waterMax}`;
 
-  if (state.weather !== lastWeather) {
-    lastWeather = state.weather; const w = WEATHER[state.weather] || WEATHER.sunny;
-    $('weatherEl').textContent = w.name; $('weatherIco').textContent = w.emoji;
-    if (typeof updateWeatherAudio === 'function') updateWeatherAudio();
-    const particleBox = document.getElementById('weather-particles'), wName = state.weather;
-    if (wName === 'rain' || wName === 'storm' || wName === 'snow') {
-      if (particleBox.children.length === 0) {
-        const count = wName === 'storm' ? 40 : (wName === 'rain' ? 25 : 20);
-        for (let i = 0; i < count; i++) { const p = document.createElement('div'); p.className = 'particle'; p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = (Math.random() * 1.5 + 0.8) + 's'; p.style.animationDelay = Math.random() * 2 + 's'; particleBox.appendChild(p); }
+if (state.weather !== lastWeather) {
+  lastWeather = state.weather; 
+  const w = WEATHER[state.weather] || WEATHER.sunny;
+  $('weatherEl').textContent = w.name; 
+  $('weatherIco').textContent = w.emoji;
+  
+  // ✅ 修复：给 body 加上天气 class，让动态配色和雪花样式生效
+  const isFish = document.body.classList.contains('in-fish-scene');
+  document.body.className = `weather-${state.weather}` + (isFish ? ' in-fish-scene' : '');
+
+  if (typeof updateWeatherAudio === 'function') updateWeatherAudio();
+  
+  const particleBox = document.getElementById('weather-particles');
+  const wName = state.weather;
+  particleBox.innerHTML = ''; // 每次天气变化先清空旧的粒子
+  
+  if (wName === 'rain' || wName === 'storm' || wName === 'snow') {
+    const count = wName === 'storm' ? 40 : (wName === 'rain' ? 25 : 35); 
+    for (let i = 0; i < count; i++) { 
+      const p = document.createElement('div'); 
+      p.className = 'particle'; 
+      p.style.left = Math.random() * 100 + 'vw'; 
+      
+      if (wName === 'snow') {
+        // ❄️ 雪花专属：随机大小，飘落速度更慢更轻柔
+        p.style.width = (Math.random() * 6 + 3) + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = (Math.random() * 4 + 4) + 's'; 
+        p.style.animationDelay = (Math.random() * 3) + 's';
+      } else {
+        // 🌧️ 雨滴专属：速度快，大小固定
+        p.style.animationDuration = (Math.random() * 1.5 + 0.8) + 's'; 
+        p.style.animationDelay = Math.random() * 2 + 's'; 
       }
-    } else { particleBox.innerHTML = ''; }
+      particleBox.appendChild(p); 
+    }
   }
+}
 }
 
 const farmEl = $('farm'); let tileEls = []; 
