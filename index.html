@@ -548,59 +548,58 @@ document.getElementById('muteBtn').addEventListener('click', (e) => {
 const GRID_W = 8, GRID_H = 8, ROD_PRICE = 2000, MAX_ROD_LVL = 5, BAIT_PRICE = 12, BAIT_LIMIT = 5, START_WATER = 8, WATER_PER_UP = 8, MAX_WATER_LVL = 8;
 
 const CROPS = {
-  turnip:     { name:'萝卜',    emoji:'🥬', days:2,  seed:20,   sell:45,    xp:6,   lv:1  },
-  carrot:     { name:'胡萝卜',  emoji:'🥕', days:3,  seed:40,   sell:95,    xp:10,  lv:1  },
-  potato:     { name:'土豆',    emoji:'🥔', days:4,  seed:70,   sell:175,   xp:16,  lv:2  },
-  tomato:     { name:'番茄',    emoji:'🍅', days:5,  seed:120,  sell:310,   xp:24,  lv:3  },
-  strawberry: { name:'草莓',    emoji:'🍓', days:5,  seed:165,  sell:420,   xp:30,  lv:4  },
-  corn:       { name:'玉米',    emoji:'🌽', days:6,  seed:210,  sell:540,   xp:40,  lv:5  },
-  sunflower:  { name:'向日葵',  emoji:'🌻', days:6,  seed:270,  sell:700,   xp:50,  lv:6  },
-  blueberry:  { name:'蓝莓',    emoji:'🫐', days:7,  seed:350,  sell:920,   xp:66,  lv:8  },
-  pumpkin:    { name:'南瓜',    emoji:'🎃', days:8,  seed:470,  sell:1250,  xp:90,  lv:10 },
-  grape:      { name:'葡萄',    emoji:'🍇', days:8,  seed:600,  sell:1620,  xp:115, lv:12 },
-  melon:      { name:'甜瓜',    emoji:'🍈', days:9,  seed:780,  sell:2200,  xp:150, lv:14 },
-  watermelon: { name:'西瓜',    emoji:'🍉', days:10, seed:1000, sell:2900,  xp:190, lv:17 },
-  dragonfruit:{ name:'火龙果',  emoji:'🌺', days:11, seed:1450, sell:4400,  xp:260, lv:20 },
-  goldenwheat:{ name:'金麦',    emoji:'🌾', days:12, seed:2300, sell:7100,  xp:380, lv:24 },
-  starfruit:  { name:'星之果',  emoji:'⭐', days:13, seed:3800, sell:12000, xp:560, lv:28 },
+  turnip:     { name:isZh?'萝卜':'Turnip',    emoji:'🥬', days:2,  seed:20,   sell:45,    xp:6,   lv:1  },
+  carrot:     { name:isZh?'胡萝卜':'Carrot',  emoji:'🥕', days:3,  seed:40,   sell:95,    xp:10,  lv:1  },
+  potato:     { name:isZh?'土豆':'Potato',    emoji:'🥔', days:4,  seed:70,   sell:175,   xp:16,  lv:2  },
+  tomato:     { name:isZh?'番茄':'Tomato',    emoji:'🍅', days:5,  seed:120,  sell:310,   xp:24,  lv:3  },
+  strawberry: { name:isZh?'草莓':'Strawberry',emoji:'🍓', days:5,  seed:165,  sell:420,   xp:30,  lv:4  },
+  corn:       { name:isZh?'玉米':'Corn',      emoji:'🌽', days:6,  seed:210,  sell:540,   xp:40,  lv:5  },
+  sunflower:  { name:isZh?'向日葵':'Sunflower',emoji:'🌻',days:6,  seed:270,  sell:700,   xp:50,  lv:6  },
+  blueberry:  { name:isZh?'蓝莓':'Blueberry', emoji:'🫐', days:7,  seed:350,  sell:920,   xp:66,  lv:8  },
+  pumpkin:    { name:isZh?'南瓜':'Pumpkin',   emoji:'🎃', days:8,  seed:470,  sell:1250,  xp:90,  lv:10 },
+  grape:      { name:isZh?'葡萄':'Grape',     emoji:'🍇', days:8,  seed:600,  sell:1620,  xp:115, lv:12 },
+  melon:      { name:isZh?'甜瓜':'Melon',     emoji:'🍈', days:9,  seed:780,  sell:2200,  xp:150, lv:14 },
+  watermelon: { name:isZh?'西瓜':'Watermelon',emoji:'🍉', days:10, seed:1000, sell:2900,  xp:190, lv:17 },
+  dragonfruit:{ name:isZh?'火龙果':'Dragonfruit',emoji:'🌺',days:11,seed:1450,sell:4400, xp:260, lv:20 },
+  goldenwheat:{ name:isZh?'金麦':'Gold Wheat',emoji:'🌾', days:12, seed:2300, sell:7100,  xp:380, lv:24 },
+  starfruit:  { name:isZh?'星之果':'Starfruit',emoji:'⭐', days:13, seed:3800, sell:12000, xp:560, lv:28 },
 };
 
 const FISH = {
-  crucian:  { name:'鲫鱼',    emoji:'🐟', price:30,    rarity:1, diff:0.55, xp:8   },
-  carp:     { name:'鲤鱼',    emoji:'🐠', price:55,    rarity:1, diff:0.65, xp:12  },
-  bass:     { name:'鲈鱼',    emoji:'🐟', price:110,   rarity:2, diff:0.80, xp:22  },
-  salmon:   { name:'三文鱼',  emoji:'🐟', price:200,   rarity:2, diff:0.90, xp:34  },
-  catfish:  { name:'鲶鱼',    emoji:'🐡', price:350,   rarity:3, diff:1.05, xp:58  },
-  puffer:   { name:'河豚',    emoji:'🐡', price:600,   rarity:3, diff:1.20, xp:85  },
-  squid:    { name:'鱿鱼',    emoji:'🦑', price:1000,  rarity:4, diff:1.40, xp:130 },
-  octopus:  { name:'章鱼',    emoji:'🐙', price:1700,  rarity:4, diff:1.55, xp:190 },
-  shark:    { name:'鲨鱼',    emoji:'🦈', price:4000,  rarity:5, diff:1.80, xp:320 },
-  whale:    { name:'鲸鱼',    emoji:'🐋', price:10000, rarity:6, diff:2.10, xp:600 },
+  crucian:  { name:isZh?'鲫鱼':'Crucian',    emoji:'🐟', price:30,    rarity:1, diff:0.55, xp:8   },
+  carp:     { name:isZh?'鲤鱼':'Carp',       emoji:'🐠', price:55,    rarity:1, diff:0.65, xp:12  },
+  bass:     { name:isZh?'鲈鱼':'Bass',       emoji:'🐟', price:110,   rarity:2, diff:0.80, xp:22  },
+  salmon:   { name:isZh?'三文鱼':'Salmon',   emoji:'🐟', price:200,   rarity:2, diff:0.90, xp:34  },
+  catfish:  { name:isZh?'鲶鱼':'Catfish',    emoji:'🐡', price:350,   rarity:3, diff:1.05, xp:58  },
+  puffer:   { name:isZh?'河豚':'Puffer',     emoji:'🐡', price:600,   rarity:3, diff:1.20, xp:85  },
+  squid:    { name:isZh?'鱿鱼':'Squid',      emoji:'🦑', price:1000,  rarity:4, diff:1.40, xp:130 },
+  octopus:  { name:isZh?'章鱼':'Octopus',    emoji:'🐙', price:1700,  rarity:4, diff:1.55, xp:190 },
+  shark:    { name:isZh?'鲨鱼':'Shark',      emoji:'🦈', price:4000,  rarity:5, diff:1.80, xp:320 },
+  whale:    { name:isZh?'鲸鱼':'Whale',      emoji:'🐋', price:10000, rarity:6, diff:2.10, xp:600 },
 };
 
 const ANIMALS = {
-  chicken: { name:'母鸡', emoji:'🐔', price:1500,  product:'egg',   prodName:'鸡蛋',   prodEmoji:'🥚', prodPrice:300  },
-  cow:     { name:'奶牛', emoji:'🐄', price:6000,  product:'milk',  prodName:'牛奶',   prodEmoji:'🥛', prodPrice:1200 },
-  sheep:   { name:'绵羊', emoji:'🐑', price:15000, product:'wool',  prodName:'羊毛',   prodEmoji:'🧶', prodPrice:3500 },
+  chicken: { name:isZh?'母鸡':'Chicken', emoji:'🐔', price:1500,  product:'egg',   prodName:isZh?'鸡蛋':'Egg',  prodEmoji:'🥚', prodPrice:300  },
+  cow:     { name:isZh?'奶牛':'Cow',     emoji:'🐄', price:6000,  product:'milk',  prodName:isZh?'牛奶':'Milk', prodEmoji:'🥛', prodPrice:1200 },
+  sheep:   { name:isZh?'绵羊':'Sheep',   emoji:'🐑', price:15000, product:'wool',  prodName:isZh?'羊毛':'Wool', prodEmoji:'🧶', prodPrice:3500 },
 };
 
 const WEATHER = {
-  sunny:  { name:'晴天', emoji:'☀️', color:'#f5c542', sky:['#2c4f33', '#16211a'] },
-  cloudy: { name:'阴天', emoji:'☁️', color:'#9aa9b5', sky:['#3a4649', '#1a2024'] },
-  rain:   { name:'雨天', emoji:'🌧️', color:'#6fa8dc', waters:true, sky:['#2a3d4a', '#131d24'] },
-  storm:  { name:'暴雨', emoji:'⛈️', color:'#5b7fa8', waters:true, rareBonus:true, sky:['#232f3d', '#0e141a'] },
-  hot:    { name:'酷暑', emoji:'🔥', color:'#e06666', rareBonus:true, sky:['#4a3020', '#1f1410'] },
-  wind:   { name:'大风', emoji:'🌬️', color:'#a8c3b0', sky:['#3a4a42', '#18211c'] },
-  snow:   { name:'雪天', emoji:'🌨️', color:'#dfe8f0', waters:true, sky:['#3a4a56', '#151b20'] },
+  sunny:  { name:isZh?'晴天':'Sunny',  emoji:'☀️', color:'#f5c542', sky:['#2c4f33', '#16211a'] },
+  cloudy: { name:isZh?'阴天':'Cloudy', emoji:'☁️', color:'#9aa9b5', sky:['#3a4649', '#1a2024'] },
+  rain:   { name:isZh?'雨天':'Rain',   emoji:'🌧️', color:'#6fa8dc', waters:true, sky:['#2a3d4a', '#131d24'] },
+  storm:  { name:isZh?'暴雨':'Storm',  emoji:'⛈️', color:'#5b7fa8', waters:true, rareBonus:true, sky:['#232f3d', '#0e141a'] },
+  hot:    { name:isZh?'酷暑':'Hot',    emoji:'🔥', color:'#e06666', rareBonus:true, sky:['#4a3020', '#1f1410'] },
+  wind:   { name:isZh?'大风':'Windy',  emoji:'🌬️', color:'#a8c3b0', sky:['#3a4a42', '#18211c'] },
+  snow:   { name:isZh?'雪天':'Snow',   emoji:'🌨️', color:'#dfe8f0', waters:true, sky:['#3a4a56', '#151b20'] },
 };
 
 const SEASONS = {
-  spring: { name:'春季', emoji:'🌸', witherDays:2, weather:{ sunny:0.45, cloudy:0.25, rain:0.20, storm:0.05, wind:0.05 } },
-  summer: { name:'夏季', emoji:'☀️', witherDays:2, weather:{ sunny:0.35, cloudy:0.10, rain:0.20, storm:0.15, hot:0.20 } },
-  autumn: { name:'秋季', emoji:'🍂', witherDays:1, weather:{ sunny:0.30, cloudy:0.25, wind:0.35, rain:0.10 } },
-  winter: { name:'冬季', emoji:'❄️', witherDays:1, weather:{ sunny:0.05, cloudy:0.50, wind:0.10, snow:0.80 } },
-};
-const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'], DAYS_PER_SEASON = 7;
+  spring: { name:isZh?'春季':'Spring', emoji:'🌸', witherDays:2, weather:{ sunny:0.45, cloudy:0.25, rain:0.20, storm:0.05, wind:0.05 } },
+  summer: { name:isZh?'夏季':'Summer', emoji:'☀️', witherDays:2, weather:{ sunny:0.35, cloudy:0.10, rain:0.20, storm:0.15, hot:0.20 } },
+  autumn: { name:isZh?'秋季':'Autumn', emoji:'🍂', witherDays:1, weather:{ sunny:0.30, cloudy:0.25, wind:0.35, rain:0.10 } },
+  winter: { name:isZh?'冬季':'Winter', emoji:'❄️', witherDays:1, weather:{ sunny:0.10, cloudy:0.15, wind:0.15, snow:0.60 } },
+};const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'], DAYS_PER_SEASON = 7;
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.floor(n).toLocaleString('zh-CN');
