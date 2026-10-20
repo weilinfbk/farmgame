@@ -1446,16 +1446,22 @@ function updateRhythmUI() {
   else tensionBarFill.style.background = 'var(--md-error)';
 }
 function successFishing() {
-  const caught = currentFish;          // ✅ 先保存
+  // ✅ 第一步：先把鱼存下来
+  const caught = currentFish; 
+  
   if (rhythmFrameId) { cancelAnimationFrame(rhythmFrameId); rhythmFrameId = null; }
   if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
+  
   fishState = 'idle';
   currentFish = null;
   updateFishUI();
   playSound('fish_success');
   if (navigator.vibrate) navigator.vibrate(200);
 
-  if (!caught) return;                 // 兜底保护
+  // 如果出于某种奇怪的原因没有鱼，直接返回
+  if (!caught) return; 
+
+  // ✅ 第二步：用存下来的 caught 发奖励
   addItem('fish_' + caught.id, 1);
   addXp('fish', caught.xp);
   state.stats.fish++;
@@ -1464,22 +1470,6 @@ function successFishing() {
   refresh();
   saveGame();
 }
-
-  const f = currentFish || { id: 'crucian', name: '鲫鱼', emoji: '🐟', rarity: 1, xp: 8 };
-  // 保护：如果 currentFish 因为某种原因被清空，用兜底数据
-  // 但正常流程不会走到这里，因为 fishState 一旦变化会立刻清理
-
-  // 注意：正常流程下 currentFish 在 updateFishUI 前仍有值，此处修正顺序
-  // 直接使用保存下来的 f
-  addItem('fish_' + f.id, 1);
-  addXp('fish', f.xp);
-  state.stats.fish++;
-  addQuestProgress('fish', 1);
-  toast(`🎉 钓到了 ${f.emoji} ${f.name}（${'★'.repeat(f.rarity)}）！`, 2500);
-  refresh();
-  saveGame();
-}
-
 function failFishing() {
   if (rhythmFrameId) { cancelAnimationFrame(rhythmFrameId); rhythmFrameId = null; }
   if (fishTimer) { clearTimeout(fishTimer); fishTimer = null; }
